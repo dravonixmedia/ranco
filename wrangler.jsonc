@@ -9,11 +9,11 @@
     "directory": "./dist",
     "binding": "ASSETS",
     // Page requests go through the Worker (to apply maintenance mode);
-    // images, fonts, scripts, robots.txt and sitemap.xml are served straight
-    // from assets with 200, never as the 503 maintenance page.
+    // images, fonts, scripts, favicon.ico, robots.txt and sitemap.xml are
+    // served straight from assets with 200, never as the 503 maintenance page.
     // No SPA fallback: the site has no client-side routes, so unknown URLs
     // and missing files return 404 once maintenance is off.
-    "run_worker_first": ["/*", "!/assets/*", "!/robots.txt", "!/sitemap.xml"]
+    "run_worker_first": ["/*", "!/assets/*", "!/favicon.ico", "!/robots.txt", "!/sitemap.xml"]
   },
   "vars": {
     // Production state: maintenance ON.
