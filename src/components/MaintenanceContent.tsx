@@ -6,11 +6,11 @@ export function MaintenanceContent() {
     <main className="content">
       <span className="rule reveal" aria-hidden="true" />
       <h1 className="reveal">
-        <span>Website Under</span> <span>Maintenance</span>
+        <span>Our New Website</span> <span>Is Coming Soon</span>
       </h1>
-      <p className="lead reveal">We’re Working on Something Better.</p>
+      <p className="lead reveal">Crafted Renovations for Kerala Homes.</p>
       <p className="desc reveal">
-        Our website is temporarily unavailable as we prepare a better digital experience. We’ll be back shortly.
+        Our new website is on its way. Until then, we’re happy to discuss your villa or apartment renovation.
       </p>
       <ContactActions />
       <div className="enquiries reveal">

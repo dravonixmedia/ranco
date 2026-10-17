@@ -15,7 +15,7 @@ src/
   hooks/usePrefersReducedMotion.ts
   components/
     BackgroundSlideshow.tsx  the four photos (WebP + original JPEG fallback)
-    SiteHeader.tsx           RANCO wordmark, tagline, "Back shortly"
+    SiteHeader.tsx           RANCO wordmark, tagline, "Coming soon"
     MaintenanceContent.tsx   heading, text, enquiries number
     ContactActions.tsx       Call Now / WhatsApp buttons
     SiteFooter.tsx           copyright, slide progress bars, ranco.in

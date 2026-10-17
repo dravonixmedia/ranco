@@ -7,7 +7,7 @@ export function SiteHeader() {
           Villa &amp; Apartment Renovation<span className="sep" aria-hidden="true">|</span> Kerala
         </span>
       </a>
-      <span className="status">Back shortly</span>
+      <span className="status">Coming soon</span>
     </header>
   )
 }
