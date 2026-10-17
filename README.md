@@ -27,6 +27,7 @@ public/                    copied to dist/ unchanged
   robots.txt               crawling allowed, points to the sitemap
   sitemap.xml              XML sitemap (https://ranco.in/)
 scripts/prerender.mjs      writes the rendered page into dist/index.html
+scripts/http-test.mjs      HTTP integration tests (npm test)
 worker/index.ts            Worker: serves dist/, applies maintenance mode
 wrangler.jsonc             Worker + assets config, MAINTENANCE_MODE variable
 ```
@@ -43,7 +44,8 @@ npm run typecheck   # tsc for app, worker and Vite config
 npm run lint        # ESLint
 npm run build       # typecheck + build + prerender → dist/
 npm run preview     # build, then run the real Worker locally (wrangler dev)
-npm run check       # typecheck + lint + build + `wrangler deploy --dry-run`
+npm test            # HTTP integration tests against dist/ (build first)
+npm run check       # typecheck + lint + build + test + `wrangler deploy --dry-run`
 npx wrangler deploy # production deploy (needs Cloudflare login/API token)
 ```
 
@@ -65,24 +67,30 @@ The Worker's name in the dashboard must match `"name"` in `wrangler.jsonc` (`ran
 
 ## Maintenance mode
 
-Production state: **on**. Set in `wrangler.jsonc` → `vars`:
+Production state: **off**. The coming-soon page is served as a normal, indexable
+page. Set in `wrangler.jsonc` → `vars`:
 
-| `MAINTENANCE_MODE` | Page URLs (`/` and any other path) | `/assets/*`, `favicon.ico`, `robots.txt`, `sitemap.xml` |
-|---|---|---|
-| `"on"` | **503** + `Retry-After` + the maintenance page | 200 |
-| `"off"` | **200** for `/`, 404 for unknown URLs | 200 |
-| missing, empty or anything else | treated as `"on"` (and a warning is logged) | 200 |
+| `MAINTENANCE_MODE` | `/` | Unknown URLs | `/assets/*`, `favicon.ico`, `robots.txt`, `sitemap.xml` |
+|---|---|---|---|
+| `"off"` (production) | **200** | **404** | 200 |
+| `"on"` | **503** + `Retry-After` | 503 (maintenance page) | 200 |
+| missing, empty or anything else | treated as `"on"`, warning logged | 503 | 200 |
+
+Use `"on"` only for a genuine temporary outage, and switch back to `"off"` as soon
+as it ends: Google reduces crawling of a hostname that keeps returning 503.
 
 The switch is fail-safe: only the exact value `"off"` (case and surrounding spaces
-ignored) takes the site out of maintenance. A deleted or misspelt value keeps the
-maintenance page up rather than exposing the site by accident.
+ignored) serves the site normally, so never delete the line.
 
-`MAINTENANCE_RETRY_AFTER_SECONDS` (default `259200`, 3 days) sets `Retry-After`;
-an invalid value falls back to 3 days.
+`MAINTENANCE_RETRY_AFTER_SECONDS` (default `259200`, 3 days) sets `Retry-After`
+while `"on"`; an invalid value falls back to 3 days.
 
 To change it in production, edit the value in `wrangler.jsonc`, commit, and push to
 `main`; Workers Builds redeploys. Change it in the file, not in the dashboard:
 `wrangler deploy` replaces dashboard variables with the ones in `wrangler.jsonc`.
 
-When the full website launches, set `"off"`. Don't leave the 503 in place for more
-than a couple of weeks: search engines may start dropping pages.
+## Tests
+
+`npm test` starts the Worker locally with `wrangler dev` against `dist/` (run
+`npm run build` first) and checks status codes, headers and SEO tags in each
+mode. `npm run check` runs typecheck, lint, build, tests and a deploy dry-run.

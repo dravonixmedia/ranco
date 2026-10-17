@@ -9,8 +9,9 @@
     "preview": "npm run build && wrangler dev",
     "typecheck": "tsc -b",
     "lint": "eslint .",
-    "check": "npm run typecheck && npm run lint && npm run build && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy"
+    "check": "npm run typecheck && npm run lint && npm run build && npm test && wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "test": "node scripts/http-test.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",

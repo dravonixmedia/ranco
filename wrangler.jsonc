@@ -8,22 +8,27 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    // Page requests go through the Worker (to apply maintenance mode);
+    // Page requests go through the Worker (to apply MAINTENANCE_MODE);
     // images, fonts, scripts, favicon.ico, robots.txt and sitemap.xml are
-    // served straight from assets with 200, never as the 503 maintenance page.
+    // always served straight from assets with 200, never as a 503 page.
     // No SPA fallback: the site has no client-side routes, so unknown URLs
-    // and missing files return 404 once maintenance is off.
+    // and missing files return 404 while maintenance is off.
     "run_worker_first": ["/*", "!/assets/*", "!/favicon.ico", "!/robots.txt", "!/sitemap.xml"]
   },
   "vars": {
-    // Production state: maintenance ON.
-    //   "on"  → every page returns the maintenance page as 503 + Retry-After.
-    //   "off" → the site is served normally (200; 404 for unknown URLs).
-    // Fail-safe: a missing, empty or misspelt value is treated as "on".
+    // Production state: OFF. The coming-soon page is served as a normal,
+    // indexable page: 200 for "/", 404 for unknown URLs.
+    //   "off" → normal responses (production default).
+    //   "on"  → genuine temporary outage only: every page returns the
+    //           maintenance page as 503 + Retry-After. Turn it back off as
+    //           soon as the outage ends; long-running 503s reduce crawling.
+    // Fail-safe: a missing, empty or misspelt value is treated as "on" (and
+    // logs a warning), so never delete this line.
     // Change it here and push to main; `wrangler deploy` replaces any
     // variables set in the Cloudflare dashboard with these values.
-    "MAINTENANCE_MODE": "on",
-    // Retry-After in seconds (259200 = 3 days). Invalid values fall back to 3 days.
+    "MAINTENANCE_MODE": "off",
+    // Retry-After in seconds, used only while "on" (259200 = 3 days).
+    // Invalid values fall back to 3 days.
     "MAINTENANCE_RETRY_AFTER_SECONDS": "259200"
   }
 }

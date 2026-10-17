@@ -1,10 +1,11 @@
-// Serves the built site from the ASSETS binding and applies maintenance mode.
+// Serves the built site from the ASSETS binding and applies MAINTENANCE_MODE.
 //
-// While maintenance is on, every page URL returns the maintenance page as
-// 503 + Retry-After, so search engines treat the outage as temporary and keep
-// existing rankings. Images, fonts, scripts, favicon.ico, robots.txt and
-// sitemap.xml never reach this Worker (see run_worker_first in wrangler.jsonc)
-// and are served with 200.
+// Normally ("off") requests pass straight through: the coming-soon page is a
+// regular 200 page and unknown URLs are 404. For a genuine temporary outage
+// ("on"), every page URL returns the maintenance page as 503 + Retry-After,
+// so search engines treat it as temporary. Images, fonts, scripts,
+// favicon.ico, robots.txt and sitemap.xml never reach this Worker (see
+// run_worker_first in wrangler.jsonc) and are always served with 200.
 
 interface Env {
   ASSETS: Fetcher
