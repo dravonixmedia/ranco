@@ -70,7 +70,7 @@ h1 span{display:block}
 
 .enquiries{margin-top:clamp(34px,5.4vh,52px);padding-top:22px;border-top:1px solid var(--line);max-width:30em}
 .enquiries-label{display:block;font-size:10px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
-.enquiries-number{font-family:var(--serif);font-size:clamp(24px,2.4vw,30px);font-weight:500;letter-spacing:.02em;text-decoration:none;background:linear-gradient(var(--accent),var(--accent)) 0 100%/0 1px no-repeat;transition:background-size .45s var(--ease),color .3s}
+.enquiries-number{font-family:Arial,Helvetica,sans-serif;font-size:clamp(24px,2.4vw,30px);font-weight:400;letter-spacing:normal;text-decoration:none;background:linear-gradient(var(--accent),var(--accent)) 0 100%/0 1px no-repeat;transition:background-size .45s var(--ease),color .3s}
 .enquiries-number:hover{background-size:100% 1px;color:#fff}
 
 /* Footer */
