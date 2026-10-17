@@ -1,51 +1,80 @@
 # RANCO — maintenance page
 
-Static maintenance page for https://ranco.in, built for Cloudflare Pages.
+The https://ranco.in maintenance page: React + TypeScript + Vite, deployed as a
+Cloudflare Worker with Static Assets.
 
 ```
-public/                  ← Pages build output directory (deployed as-is)
-  index.html             page, inline CSS + JS, no dependencies
-  _headers               security + asset cache headers
-  robots.txt             crawling allowed (no deindexing)
-  assets/images/         original photos (villa-1..4.jpg) + WebP copies
-  assets/fonts/          self-hosted Manrope + Cormorant Garamond (OFL)
-functions/_middleware.js returns HTML with 503 + Retry-After during maintenance
-wrangler.toml            Pages project config
+index.html                 Vite entry: <head> (title, SEO, Open Graph, JSON-LD, preloads)
+src/
+  main.tsx                 browser entry (hydrates the prerendered HTML)
+  entry-server.tsx         build-time render used by scripts/prerender.mjs
+  App.tsx                  page layout
+  content.ts               contact details, photo list, slide interval
+  styles.css               all styling
+  hooks/useSlideshow.ts    crossfade timing, lazy photo loading, tab-hidden pause
+  hooks/usePrefersReducedMotion.ts
+  components/
+    BackgroundSlideshow.tsx  the four photos (WebP + original JPEG fallback)
+    SiteHeader.tsx           RANCO wordmark, tagline, "Back shortly"
+    MaintenanceContent.tsx   heading, text, enquiries number
+    ContactActions.tsx       Call Now / WhatsApp buttons
+    SiteFooter.tsx           copyright, slide progress bars, ranco.in
+public/                    copied to dist/ unchanged
+  assets/images/           original photos villa-1..4.jpg + WebP copies
+  assets/fonts/            self-hosted Manrope + Cormorant Garamond (OFL)
+  _headers                 security headers, 7-day cache for /assets/*
+  robots.txt               crawling allowed
+scripts/prerender.mjs      writes the rendered page into dist/index.html
+worker/index.ts            Worker: serves dist/, applies maintenance mode
+wrangler.jsonc             Worker + assets config, MAINTENANCE_MODE variable
 ```
 
-## Local preview
+The page is prerendered at build time, so its text, links and first photo are in
+the HTML before any JavaScript runs. React then hydrates it to run the slideshow.
+
+## Commands
 
 ```sh
-npx wrangler pages dev        # http://localhost:8788 (includes the 503 middleware)
+npm install
+npm run dev         # Vite dev server with hot reload (no Worker, no 503)
+npm run typecheck   # tsc for app, worker and Vite config
+npm run lint        # ESLint
+npm run build       # typecheck + build + prerender → dist/
+npm run preview     # build, then run the real Worker locally (wrangler dev)
+npm run check       # typecheck + lint + build + `wrangler deploy --dry-run`
+npx wrangler deploy # production deploy (needs Cloudflare login/API token)
 ```
 
-## Deploy (Cloudflare Pages)
+## Cloudflare Workers Builds settings
 
-This is a **Pages** project, not a Worker. There is no build step.
+Workers & Pages → the `ranco` Worker → Settings → Build:
 
-Dashboard: Workers & Pages → Create → **Pages** tab → Connect to Git → `dravonixmedia/ranco`.
-(Do not use "Import a repository" on the Workers tab — that creates a Worker whose
-deploy command is `npx wrangler deploy`, which fails on this repo.)
-- Project name: `ranco`
-- Production branch: `main`
-- Framework preset: None
-- Build command: *(leave empty)*
-- Build output directory: `public`
-- Root directory: *(leave empty)*
+| Setting | Value |
+|---|---|
+| Git repository | `dravonixmedia/ranco` |
+| Branch | `main` |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Root directory | `/` (blank) |
 
-Or with the CLI: `npx wrangler pages deploy` (uses `wrangler.toml`).
+The Worker's name in the dashboard must match `"name"` in `wrangler.jsonc` (`ranco`).
 
-Then add the custom domain `ranco.in` (and `www.ranco.in` if wanted) under the
-project's **Custom domains** tab. Cloudflare creates the DNS record when you confirm.
+## Maintenance mode
 
-## Maintenance status code
+Set in `wrangler.jsonc` → `vars`:
 
-While live, every HTML response is `503 Service Unavailable` with
-`Retry-After: 259200` (3 days) so search engines keep existing rankings.
-Images and fonts are served normally with `200`.
+| `MAINTENANCE_MODE` | Pages (`/`, any other path) | `/assets/*`, `robots.txt` |
+|---|---|---|
+| `"on"` | **503** + `Retry-After` + the maintenance page | 200 |
+| `"off"` (or missing) | **200** for `/`, 404 for unknown paths | 200 |
 
-When the full site launches, delete `functions/_middleware.js` — or uncomment
-`MAINTENANCE_MODE = "off"` under `[vars]` in `wrangler.toml` and push. (Because
-the project has a `wrangler.toml`, Pages ignores dashboard environment variables.)
-If the 503 stays in place for more than a couple of weeks, search engines may
-start dropping the page, so remove it once the outage is no longer temporary.
+`MAINTENANCE_RETRY_AFTER_SECONDS` (default `259200`, 3 days) sets `Retry-After`.
+
+To change it in production, edit the value in `wrangler.jsonc`, commit, and push to
+`main`; Workers Builds redeploys. Change it in the file, not in the dashboard:
+`wrangler deploy` replaces dashboard variables with the ones in `wrangler.jsonc`.
+
+Only the exact value `"on"` enables maintenance, so a missing or mistyped value
+serves the site normally rather than leaving it stuck on 503. When the full website
+launches, set `"off"` (or remove the Worker logic). Don't leave the 503 in place for
+more than a couple of weeks: search engines may start dropping pages.

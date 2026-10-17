@@ -1,3 +1,6 @@
-.wrangler/
 node_modules/
+dist/
+build-ssr/
+.wrangler/
+.dev.vars*
 .DS_Store

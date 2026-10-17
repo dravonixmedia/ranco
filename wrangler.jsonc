@@ -1,0 +1,23 @@
+// Cloudflare Workers + Static Assets. Production deploy: `npx wrangler deploy`
+// (run after `npm run build`, which writes the site to ./dist).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ranco",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Page requests go through the Worker (to apply maintenance mode);
+    // images, fonts, scripts and robots.txt are served straight from assets.
+    // No SPA fallback: the site has no client-side routes, so unknown URLs
+    // and missing files return 404 once maintenance is off.
+    "run_worker_first": ["/*", "!/assets/*", "!/robots.txt"]
+  },
+  "vars": {
+    // "on"  → pages return 503 + Retry-After (maintenance).
+    // "off" → normal 200 responses. Anything other than "on" counts as off.
+    "MAINTENANCE_MODE": "on",
+    "MAINTENANCE_RETRY_AFTER_SECONDS": "259200"
+  }
+}
