@@ -2,8 +2,9 @@
 //
 // While maintenance is on, every page URL returns the maintenance page as
 // 503 + Retry-After, so search engines treat the outage as temporary and keep
-// existing rankings. Images, fonts, scripts and robots.txt never reach this
-// Worker (see run_worker_first in wrangler.jsonc) and are served with 200.
+// existing rankings. Images, fonts, scripts, robots.txt and sitemap.xml never
+// reach this Worker (see run_worker_first in wrangler.jsonc) and are served
+// with 200.
 
 interface Env {
   ASSETS: Fetcher

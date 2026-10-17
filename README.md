@@ -23,7 +23,8 @@ public/                    copied to dist/ unchanged
   assets/images/           original photos villa-1..4.jpg + WebP copies
   assets/fonts/            self-hosted Manrope + Cormorant Garamond (OFL)
   _headers                 security headers, 7-day cache for /assets/*
-  robots.txt               crawling allowed
+  robots.txt               crawling allowed, points to the sitemap
+  sitemap.xml              XML sitemap (https://ranco.in/)
 scripts/prerender.mjs      writes the rendered page into dist/index.html
 worker/index.ts            Worker: serves dist/, applies maintenance mode
 wrangler.jsonc             Worker + assets config, MAINTENANCE_MODE variable
@@ -65,7 +66,7 @@ The Worker's name in the dashboard must match `"name"` in `wrangler.jsonc` (`ran
 
 Production state: **on**. Set in `wrangler.jsonc` → `vars`:
 
-| `MAINTENANCE_MODE` | Page URLs (`/` and any other path) | `/assets/*`, `robots.txt` |
+| `MAINTENANCE_MODE` | Page URLs (`/` and any other path) | `/assets/*`, `robots.txt`, `sitemap.xml` |
 |---|---|---|
 | `"on"` | **503** + `Retry-After` + the maintenance page | 200 |
 | `"off"` | **200** for `/`, 404 for unknown URLs | 200 |
