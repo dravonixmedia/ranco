@@ -1,27 +1,42 @@
-// Serves the built site from the ASSETS binding. While MAINTENANCE_MODE is
-// "on", HTML documents are returned as 503 + Retry-After so search engines
-// treat the outage as temporary and keep existing rankings. Images, fonts,
-// scripts and robots.txt never reach this Worker (see run_worker_first in
-// wrangler.jsonc) and are served with 200.
+// Serves the built site from the ASSETS binding and applies maintenance mode.
+//
+// While maintenance is on, every page URL returns the maintenance page as
+// 503 + Retry-After, so search engines treat the outage as temporary and keep
+// existing rankings. Images, fonts, scripts and robots.txt never reach this
+// Worker (see run_worker_first in wrangler.jsonc) and are served with 200.
 
 interface Env {
   ASSETS: Fetcher
+  /** "on" or "off". Anything else (missing, empty, misspelt) means "on". */
   MAINTENANCE_MODE?: string
+  /** Positive whole number of seconds for Retry-After. */
   MAINTENANCE_RETRY_AFTER_SECONDS?: string
 }
 
 const DEFAULT_RETRY_AFTER_SECONDS = 259200 // 3 days
 
-function retryAfter(value: string | undefined): string {
-  const seconds = Number(value)
-  return String(Number.isInteger(seconds) && seconds > 0 ? seconds : DEFAULT_RETRY_AFTER_SECONDS)
+/**
+ * Fail-safe: only an explicit "off" serves the site normally. A missing or
+ * invalid value keeps the maintenance page up rather than exposing the site
+ * by accident.
+ */
+export function isMaintenanceOn(value: string | undefined): boolean {
+  const mode = value?.trim().toLowerCase()
+  if (mode === 'off') return false
+  if (mode !== 'on') {
+    console.warn(`MAINTENANCE_MODE is ${JSON.stringify(value)}; expected "on" or "off". Serving maintenance page.`)
+  }
+  return true
+}
+
+export function retryAfterSeconds(value: string | undefined): string {
+  const seconds = Number(value?.trim())
+  return String(value?.trim() && Number.isInteger(seconds) && seconds > 0 ? seconds : DEFAULT_RETRY_AFTER_SECONDS)
 }
 
 export default {
   async fetch(request, env): Promise<Response> {
-    // Only an explicit "on" enables maintenance, so a missing or mistyped
-    // value can never leave the launched site stuck on 503.
-    if (env.MAINTENANCE_MODE?.trim().toLowerCase() !== 'on') return env.ASSETS.fetch(request)
+    if (!isMaintenanceOn(env.MAINTENANCE_MODE)) return env.ASSETS.fetch(request)
 
     // Drop conditional headers so a cached copy can't turn the 503 into a 304.
     const headersIn = new Headers(request.headers)
@@ -39,7 +54,7 @@ export default {
     if (!response.ok || !type.includes('text/html')) return response
 
     const headers = new Headers(response.headers)
-    headers.set('Retry-After', retryAfter(env.MAINTENANCE_RETRY_AFTER_SECONDS))
+    headers.set('Retry-After', retryAfterSeconds(env.MAINTENANCE_RETRY_AFTER_SECONDS))
     headers.set('Cache-Control', 'no-store')
 
     return new Response(response.body, { status: 503, statusText: 'Service Unavailable', headers })

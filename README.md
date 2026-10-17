@@ -57,24 +57,30 @@ Workers & Pages → the `ranco` Worker → Settings → Build:
 | Deploy command | `npx wrangler deploy` |
 | Root directory | `/` (blank) |
 
+Node.js 22 is pinned in `.node-version` (Vite 8 needs Node 20.19+ or 22.12+).
+
 The Worker's name in the dashboard must match `"name"` in `wrangler.jsonc` (`ranco`).
 
 ## Maintenance mode
 
-Set in `wrangler.jsonc` → `vars`:
+Production state: **on**. Set in `wrangler.jsonc` → `vars`:
 
-| `MAINTENANCE_MODE` | Pages (`/`, any other path) | `/assets/*`, `robots.txt` |
+| `MAINTENANCE_MODE` | Page URLs (`/` and any other path) | `/assets/*`, `robots.txt` |
 |---|---|---|
 | `"on"` | **503** + `Retry-After` + the maintenance page | 200 |
-| `"off"` (or missing) | **200** for `/`, 404 for unknown paths | 200 |
+| `"off"` | **200** for `/`, 404 for unknown URLs | 200 |
+| missing, empty or anything else | treated as `"on"` (and a warning is logged) | 200 |
 
-`MAINTENANCE_RETRY_AFTER_SECONDS` (default `259200`, 3 days) sets `Retry-After`.
+The switch is fail-safe: only the exact value `"off"` (case and surrounding spaces
+ignored) takes the site out of maintenance. A deleted or misspelt value keeps the
+maintenance page up rather than exposing the site by accident.
+
+`MAINTENANCE_RETRY_AFTER_SECONDS` (default `259200`, 3 days) sets `Retry-After`;
+an invalid value falls back to 3 days.
 
 To change it in production, edit the value in `wrangler.jsonc`, commit, and push to
 `main`; Workers Builds redeploys. Change it in the file, not in the dashboard:
 `wrangler deploy` replaces dashboard variables with the ones in `wrangler.jsonc`.
 
-Only the exact value `"on"` enables maintenance, so a missing or mistyped value
-serves the site normally rather than leaving it stuck on 503. When the full website
-launches, set `"off"` (or remove the Worker logic). Don't leave the 503 in place for
-more than a couple of weeks: search engines may start dropping pages.
+When the full website launches, set `"off"`. Don't leave the 503 in place for more
+than a couple of weeks: search engines may start dropping pages.

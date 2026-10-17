@@ -15,9 +15,14 @@
     "run_worker_first": ["/*", "!/assets/*", "!/robots.txt"]
   },
   "vars": {
-    // "on"  → pages return 503 + Retry-After (maintenance).
-    // "off" → normal 200 responses. Anything other than "on" counts as off.
+    // Production state: maintenance ON.
+    //   "on"  → every page returns the maintenance page as 503 + Retry-After.
+    //   "off" → the site is served normally (200; 404 for unknown URLs).
+    // Fail-safe: a missing, empty or misspelt value is treated as "on".
+    // Change it here and push to main; `wrangler deploy` replaces any
+    // variables set in the Cloudflare dashboard with these values.
     "MAINTENANCE_MODE": "on",
+    // Retry-After in seconds (259200 = 3 days). Invalid values fall back to 3 days.
     "MAINTENANCE_RETRY_AFTER_SECONDS": "259200"
   }
 }
