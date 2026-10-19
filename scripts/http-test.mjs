@@ -84,7 +84,7 @@ async function liveMode(base) {
   check('/ has a <title>', /<title>[^<]{10,}<\/title>/.test(html))
   check('/ has a meta description', /<meta name="description" content="[^"]{50,}">/.test(html))
   check('/ canonical is https://ranco.in/', html.includes('<link rel="canonical" href="https://ranco.in/">'))
-  check('/ is prerendered (content in HTML)', html.includes('Our New Website') && html.includes('tel:+919846667095') && html.includes('https://wa.me/919846667095'))
+  check('/ is prerendered (content in HTML)', html.includes('Build Your Dream') && html.includes('tel:+919846667095') && html.includes('https://wa.me/919846667095'))
   const head = await get(`${base}/`, { method: 'HEAD' })
   check('HEAD / → 200', head.status === 200, String(head.status))
   const query = await get(`${base}/?utm_source=test`)

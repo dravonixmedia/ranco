@@ -6,11 +6,12 @@ export function MaintenanceContent() {
     <main className="content">
       <span className="rule reveal" aria-hidden="true" />
       <h1 className="reveal">
-        <span>Our New Website</span> <span>Is Coming Soon</span>
+        <span>Build Your Dream</span> <span>Home With Us.</span>
       </h1>
       <p className="lead reveal">Crafted Renovations for Kerala Homes.</p>
       <p className="desc reveal">
-        Our new website is on its way. Until then, we’re happy to discuss your villa or apartment renovation.
+        From your first idea to the final detail, RANCO brings your vision to life with thoughtful design, quality
+        workmanship, and attention to every detail.
       </p>
       <ContactActions />
       <div className="enquiries reveal">
