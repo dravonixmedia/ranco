@@ -8,7 +8,7 @@ export function MaintenanceContent() {
       <h1 className="reveal">
         <span>Build Your Dream</span> <span>Home With Us.</span>
       </h1>
-      <p className="lead reveal">Crafted Renovations for Kerala Homes.</p>
+      <p className="lead reveal">Crafting Spaces. Creating Dreams.</p>
       <p className="desc reveal">
         From your first idea to the final detail, RANCO brings your vision to life with thoughtful design, quality
         workmanship, and attention to every detail.
