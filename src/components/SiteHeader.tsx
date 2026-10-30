@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { SITE } from '../content/site'
+import { PROCESS } from '../content/home'
+import { SITE, isVisible } from '../content/site'
 
 export interface NavItem {
   label: string
@@ -10,7 +11,8 @@ export interface NavItem {
 export const NAV: NavItem[] = [
   { label: 'Services', href: '/#services' },
   { label: 'Approach', href: '/#story' },
-  { label: 'Process', href: '/#process' },
+  // The process section is still a draft, so production must not link to it.
+  ...(isVisible(PROCESS.status) ? [{ label: 'Process', href: '/#process' }] : []),
   { label: 'Service Areas', href: '/#areas' },
   { label: 'FAQ', href: '/#faq' },
 ]

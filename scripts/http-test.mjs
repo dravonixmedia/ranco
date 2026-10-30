@@ -89,7 +89,7 @@ async function liveMode(base) {
   check('/ has a <title>', /<title>[^<]{10,}<\/title>/.test(html))
   check('/ has a meta description', /<meta name="description" content="[^"]{50,}">/.test(html))
   check('/ canonical is https://ranco.in/', html.includes('<link rel="canonical" href="https://ranco.in/">'))
-  check('/ is prerendered (content in HTML)', html.includes('Build Your Dream') && html.includes('tel:+919846667095') && html.includes('https://wa.me/919846667095'))
+  check('/ is prerendered (content in HTML)', html.replace(/<[^>]+>/g, '').includes('Build Your Dream Home With Us.') && html.includes('tel:+919846667095') && html.includes('https://wa.me/919846667095'))
   check('/ has og:image on https://ranco.in', /<meta property="og:image" content="https:\/\/ranco\.in\/_media\/[0-9a-f]+-\d+\.webp">/.test(html))
   const blocks = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map((m) => m[1])
   let ld = []

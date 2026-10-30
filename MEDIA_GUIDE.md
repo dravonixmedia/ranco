@@ -20,9 +20,9 @@ new address, so visitors never see an old cached version.
 | Folder | Used for | Recommended size |
 |---|---|---|
 | `media/home/hero/` | Full-screen homepage photo | Landscape, 2400 × 1600 px or larger |
-| `media/home/introduction/` | Homepage introduction | Portrait 4:5, 1600 px tall or larger |
+| `media/home/introduction/` | Homepage introduction (while empty, the 3rd hero photo is used) | Landscape 3:2, 2000 px wide or larger (shown 4:5 on phones) |
 | `media/home/storytelling/` | "Your Vision. Our Craft. Your Home." (while empty, the 2nd–4th hero photos are used) | Three landscape photos, 2400 px wide: `01-` Vision, `02-` Craft, `03-` Home |
-| `media/home/closing/` | Background of the final contact section | Landscape, 2400 px wide |
+| `media/home/closing/` | Full-screen background of the final contact section (while empty, the 4th hero photo is used) | Landscape, 2400 px wide |
 | `media/home/services/` | Services section background | Landscape, 2000 px wide |
 | `media/services/<service>/` | Service pages and service hover images | Landscape, 1600 px wide |
 | `media/service-areas/<district>/` | District images | Portrait 3:4, 1600 px tall |
