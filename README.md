@@ -46,23 +46,29 @@ npm run check          # typecheck + lint + unit tests + build + HTTP tests + de
 
 ## Cloudflare Workers Builds settings
 
-Workers & Pages → the `ranco` Worker → Settings → Build. Workers Builds keeps two
-separate triggers:
+Workers & Pages → the `ranco` Worker → Settings → Build:
 
-| Trigger | Branch | Build command | Deploy command |
-|---|---|---|---|
-| Production | `main` | `npm run build` | `npx wrangler deploy` |
-| Previews Base (preview builds) | every other branch | `npm run build:preview` | `npx wrangler preview` |
+| | Production (`main`) | Preview builds (every other branch) |
+|---|---|---|
+| Build command (shared) | `npm run build` | `npm run build` |
+| Deploy step | `npx wrangler deploy` | Preview command `npx wrangler preview` |
+
+Git-triggered preview builds run the same build command as production; only the
+deploy step differs. `npm run build` therefore chooses the output itself from the
+branch Workers Builds reports (`WORKERS_CI_BRANCH`):
+
+- on `main`: the production build;
+- on any other branch: `npm run build:preview` (drafts shown, `noindex`,
+  `X-Robots-Tag`, `robots.txt` disallow, no sitemap), which refuses to run on `main`.
 
 `npx wrangler preview` creates a Worker Preview (its own workers.dev URL) and never
 replaces production. Previews take their settings from the `previews` block in
 `wrangler.jsonc`, not the top level.
 
-`scripts/ci-guard.mjs` checks the branch Workers Builds reports: the production
-build refuses to run on any branch but `main`, and the preview build refuses to run
-on `main`. A mixed-up dashboard setting therefore fails the build instead of
-publishing the wrong site. Preview builds are never indexed (`X-Robots-Tag`,
-`noindex` meta, `robots.txt` disallow, no sitemap).
+Production is also protected at deploy time. `wrangler.jsonc` runs
+`scripts/ci-guard.mjs` as a custom build step before Wrangler uploads anything:
+`wrangler deploy` is refused in Workers Builds on any branch but `main`, and a
+preview build is refused by `wrangler deploy` everywhere, including locally.
 
 Node.js 22 is pinned in `.node-version` (Vite 8 needs Node 20.19+ or 22.12+).
 

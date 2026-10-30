@@ -5,6 +5,10 @@
   "name": "ranco",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
+  // Runs before wrangler deploy/preview/dev upload anything. Refuses
+  // wrangler deploy from any branch but main in Workers Builds, and refuses
+  // to deploy a preview build anywhere (see scripts/ci-guard.mjs).
+  "build": { "command": "node scripts/ci-guard.mjs wrangler" },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

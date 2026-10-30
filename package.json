@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node scripts/media.mjs build && vite",
     "media": "node scripts/media.mjs build",
-    "build": "node scripts/ci-guard.mjs production && npm run build:site",
+    "build": "node scripts/ci-guard.mjs build",
     "build:preview": "node scripts/ci-guard.mjs preview && VITE_SITE_ENV=preview npm run build:site",
     "build:site": "node scripts/media.mjs build && tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir build-ssr && node scripts/prerender.mjs && node scripts/media.mjs emit",
     "preview": "npm run build && wrangler dev",
