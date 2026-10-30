@@ -20,9 +20,13 @@ new address, so visitors never see an old cached version.
 | Folder | Used for | Recommended size |
 |---|---|---|
 | `media/home/hero/` | Full-screen homepage photo | Landscape, 2400 × 1600 px or larger |
-| `media/home/introduction/` | Homepage introduction (while empty, the 3rd hero photo is used) | Landscape 3:2, 2000 px wide or larger (shown 4:5 on phones) |
-| `media/home/storytelling/` | "Your Vision. Our Craft. Your Home." (while empty, the 2nd–4th hero photos are used) | Three landscape photos, 2400 px wide: `01-` Vision, `02-` Craft, `03-` Home |
-| `media/home/closing/` | Full-screen background of the final contact section (while empty, the 4th hero photo is used) | Landscape, 2400 px wide |
+| `media/home/gallery/` | Floating gallery after the opening (the first file opens to fill the screen) | Up to 7 photos, mixed orientation, 1600 px or larger |
+| `media/home/vision/` | Chapter 01, Your Vision: `01-` large image, `02-` small detail | Landscape 2000 px wide; detail portrait |
+| `media/home/craft/` | Chapter 02, Our Craft: `01-` large portrait, `02-` small detail | 1600 px or larger |
+| `media/home/strip/` | Full-width image band opening Chapter 02 | Wide landscape, 2400 px wide |
+| `media/home/walkthrough/` | Chapter 04, the exhibition walkthrough (captioned "Illustrative photography") | Up to 6 landscape photos, 4:3, 2000 px wide |
+| `media/home/statement/` | Blurred backdrop behind "Crafting spaces. Creating dreams." | Any |
+| `media/home/closing/` | Image band in the final chapter | Landscape, 2400 px wide |
 | `media/home/services/` | Services section background | Landscape, 2000 px wide |
 | `media/services/<service>/` | Service pages and service hover images | Landscape, 1600 px wide |
 | `media/service-areas/<district>/` | District images | Portrait 3:4, 1600 px tall |
@@ -43,8 +47,11 @@ rotation is corrected automatically.
 - Photos are used in file-name order, with numbers sorted naturally:
   `01-front-elevation.jpg`, `02-living-room.jpg`, `03-kitchen.jpg`, … `10-…`.
 - Use lowercase letters, numbers and hyphens. Avoid spaces.
-- Where a section shows **one** photo (hero, introduction, closing), it is
+- Where a section shows **one** photo (hero, strip, statement, closing), it is
   always the **first** file in name order. Nothing is chosen at random.
+- While a homepage folder is empty, the hero photos stand in for it, so the
+  page is never broken. The preview build marks any slot still without a photo
+  as a placeholder; production simply leaves it out.
 - Folders and files starting with `_` or `.` are ignored.
 
 ## Alt text (descriptions)

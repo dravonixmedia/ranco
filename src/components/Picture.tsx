@@ -16,20 +16,26 @@ interface Props {
   decorative?: boolean
   /** Content image that production simply omits until a photo is uploaded (preview still shows the placeholder). */
   optional?: boolean
+  /** Preview label for an empty slot, replacing the default "add a photo to …" hint. */
+  placeholder?: string
 }
 
 /**
  * A photograph from the media manifest, or a quiet architectural placeholder
  * when the folder has no image yet. Placeholders are labelled only in preview builds.
  */
-export function Picture({ image, folder, sizes, className = '', priority = false, cover = false, decorative = false, optional = false }: Props) {
+export function Picture({ image, folder, sizes, className = '', priority = false, cover = false, decorative = false, optional = false, placeholder }: Props) {
   if (!image) {
     if (optional && !IS_PREVIEW) return null
     return (
       <div className={`picture picture--empty ${cover ? 'picture--cover' : ''} ${className}`} aria-hidden="true">
         {IS_PREVIEW && (
           <span className="picture__label">
-            Placeholder · add a photo to <code>media/{folder}/</code>
+            {placeholder ?? (
+              <>
+                Placeholder · add a photo to <code>media/{folder}/</code>
+              </>
+            )}
           </span>
         )}
       </div>

@@ -15,7 +15,7 @@ export function App({ route }: { route: PageRoute }) {
           Preview build: not indexed. Items marked “Awaiting confirmation” are hidden in production.
         </p>
       )}
-      <SiteHeader overlay={route.id === 'home'} />
+      <SiteHeader />
       <main id="main" tabIndex={-1}>
         <Component />
       </main>

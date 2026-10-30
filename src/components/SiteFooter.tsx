@@ -1,5 +1,5 @@
 import { SITE } from '../content/site'
-import { NAV } from './SiteHeader'
+import { CHAPTERS } from '../content/chapters'
 
 export function SiteFooter() {
   return (
@@ -7,7 +7,7 @@ export function SiteFooter() {
       <div className="container">
         <div className="site-footer__top">
           <p className="site-footer__statement">
-            Crafting Spaces. <em>Creating Dreams.</em>
+            Your <em>Dream Home</em> Partner.
           </p>
           <div className="site-footer__contact">
             <a className="site-footer__phone" href={SITE.phone.tel}>
@@ -37,11 +37,11 @@ export function SiteFooter() {
             </ul>
           </div>
           <div>
-            <h2 className="site-footer__heading">Explore</h2>
+            <h2 className="site-footer__heading">Chapters</h2>
             <ul className="site-footer__list">
-              {NAV.map((item) => (
-                <li key={item.href}>
-                  <a href={item.href}>{item.label}</a>
+              {CHAPTERS.map((c) => (
+                <li key={c.id}>
+                  <a href={`/#${c.id}`}>{c.label}</a>
                 </li>
               ))}
             </ul>
