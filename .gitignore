@@ -4,3 +4,4 @@ build-ssr/
 .wrangler/
 .dev.vars*
 .DS_Store
+src/generated/

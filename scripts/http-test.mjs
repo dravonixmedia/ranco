@@ -2,7 +2,7 @@
 // the built dist/ and checks status codes, headers and SEO tags in each
 // MAINTENANCE_MODE. Run `npm run build` first; `npm test` does not build.
 import { spawn } from 'node:child_process'
-import { existsSync } from 'node:fs'
+import { existsSync, readdirSync } from 'node:fs'
 import { createServer } from 'node:net'
 import { fileURLToPath } from 'node:url'
 
@@ -63,9 +63,14 @@ async function staticFiles(base) {
   check('/sitemap.xml has no workers.dev URL', !sitemapBody.includes('workers.dev'))
   const robots = await get(`${base}/robots.txt`)
   check('/robots.txt → 200 with Sitemap line', robots.status === 200 && (await robots.text()).includes('Sitemap: https://ranco.in/sitemap.xml'), String(robots.status))
+  const sitemapTxt = await get(`${base}/sitemap.txt`)
+  check('/sitemap.txt → 200 text/plain listing https://ranco.in/', sitemapTxt.status === 200 && type(sitemapTxt).startsWith('text/plain') && (await sitemapTxt.text()).split('\n').includes('https://ranco.in/'), `${sitemapTxt.status} ${type(sitemapTxt)}`)
+  const mediaFile = readdirSync(`${root}dist/_media`)[0]
+  const media = await get(`${base}/_media/${mediaFile}`)
+  check('/_media/* → 200 image/webp, immutable cache', media.status === 200 && type(media) === 'image/webp' && (media.headers.get('cache-control') ?? '').includes('immutable'), `${media.status} ${type(media)} ${media.headers.get('cache-control')}`)
   const favicon = await get(`${base}/favicon.ico`)
   check('/favicon.ico → 200 icon', favicon.status === 200 && type(favicon).includes('icon'), `${favicon.status} ${type(favicon)}`)
-  for (const path of ['/assets/images/villa-1.jpg', '/assets/fonts/manrope-latin-wght-normal.woff2']) {
+  for (const path of ['/assets/fonts/manrope-latin-wght-normal.woff2']) {
     const res = await get(`${base}${path}`)
     check(`${path} → 200`, res.status === 200, String(res.status))
   }
@@ -85,6 +90,16 @@ async function liveMode(base) {
   check('/ has a meta description', /<meta name="description" content="[^"]{50,}">/.test(html))
   check('/ canonical is https://ranco.in/', html.includes('<link rel="canonical" href="https://ranco.in/">'))
   check('/ is prerendered (content in HTML)', html.includes('Build Your Dream') && html.includes('tel:+919846667095') && html.includes('https://wa.me/919846667095'))
+  check('/ has og:image on https://ranco.in', /<meta property="og:image" content="https:\/\/ranco\.in\/_media\/[0-9a-f]+-\d+\.webp">/.test(html))
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map((m) => m[1])
+  let ld = []
+  try {
+    ld = blocks.map((b) => JSON.parse(b))
+  } catch {
+    // reported below
+  }
+  check('/ structured data parses (business + website)', ld.length === 2 && ld.some((d) => d['@type'] === 'HomeAndConstructionBusiness' && d.telephone === '+91-98466-67095') && ld.some((d) => d['@type'] === 'WebSite'), `${blocks.length} blocks`)
+  check('/ hero image is preloaded', /<link rel="preload" as="image"[^>]+fetchpriority="high">/.test(html))
   const head = await get(`${base}/`, { method: 'HEAD' })
   check('HEAD / → 200', head.status === 200, String(head.status))
   const query = await get(`${base}/?utm_source=test`)
@@ -93,6 +108,11 @@ async function liveMode(base) {
     const res = await get(`${base}${path}`)
     check(`${path} → 404`, res.status === 404, String(res.status))
   }
+  const notFound = await get(`${base}/old-page`)
+  const notFoundHtml = await notFound.text()
+  check('404 page body is the real 404 page, noindex, no canonical', notFoundHtml.includes('This page could not be found.') && notFoundHtml.includes('<meta name="robots" content="noindex, nofollow">') && !notFoundHtml.includes('rel="canonical"'))
+  const direct404 = await get(`${base}/404`)
+  check('/404 itself → 404 (not a 200 soft-404)', direct404.status === 404, String(direct404.status))
   const idx = await get(`${base}/index.html`)
   check('/index.html → redirect to /', [301, 307, 308].includes(idx.status) && idx.headers.get('location') === '/', `${idx.status} ${idx.headers.get('location')}`)
   await staticFiles(base)

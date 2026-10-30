@@ -1,52 +1,47 @@
-# RANCO — maintenance page
+# RANCO website
 
-The https://ranco.in maintenance page: React + TypeScript + Vite, deployed as a
-Cloudflare Worker with Static Assets.
+https://ranco.in: React + TypeScript + Vite, prerendered to static HTML per page
+and served by a Cloudflare Worker with Static Assets.
+
+- `MEDIA_GUIDE.md`: adding, replacing and removing photographs (no code needed)
+- `docs/ARCHITECTURE.md`: audit, architecture and staged plan
+- `docs/CONTENT_REVIEW.md`: content awaiting client confirmation
 
 ```
-index.html                 Vite entry: <head> (title, SEO, Open Graph, JSON-LD, preloads)
+media/                     photographs, organised by page and section (see MEDIA_GUIDE.md)
+index.html                 HTML template (shared head, fonts, motion opt-in script)
 src/
-  main.tsx                 browser entry (hydrates the prerendered HTML)
-  entry-server.tsx         build-time render used by scripts/prerender.mjs
-  App.tsx                  page layout
-  content.ts               contact details, photo list, slide interval
-  styles.css               all styling
-  hooks/useSlideshow.ts    crossfade timing, lazy photo loading, tab-hidden pause
-  hooks/usePrefersReducedMotion.ts
-  components/
-    BackgroundSlideshow.tsx  the four photos (WebP + original JPEG fallback)
-    SiteHeader.tsx           RANCO wordmark, tagline, "Coming soon"
-    MaintenanceContent.tsx   heading, text, enquiries number
-    ContactActions.tsx       Call Now / WhatsApp buttons
-    SiteFooter.tsx           copyright, slide progress bars, ranco.in
-public/                    copied to dist/ unchanged
-  assets/images/           original photos villa-1..4.jpg + WebP copies
-  assets/fonts/            self-hosted Manrope + Cormorant Garamond (OFL)
-  _headers                 security headers, 7-day cache for /assets/*
-  favicon.ico              16/32/48 px icon rendered from the approved SVG favicon
-  robots.txt               crawling allowed, points to the sitemap
-  sitemap.xml              XML sitemap (https://ranco.in/)
-scripts/prerender.mjs      writes the rendered page into dist/index.html
-scripts/http-test.mjs      HTTP integration tests (npm test)
-worker/index.ts            Worker: serves dist/, applies maintenance mode
-wrangler.jsonc             Worker + assets config, MAINTENANCE_MODE variable
+  routes.tsx               pages: path, output file, title, description, structured data
+  seo/head.ts              per-page <head> tags and sitemap generation
+  content/                 verified facts (site.ts), services and districts (taxonomy.json), copy (home.ts)
+  media/                   image manifest types and helpers (getImage, getImages)
+  generated/media.ts       image manifest, generated on every build (not committed)
+  pages/                   HomePage, NotFoundPage
+  components/              header, footer, Picture, EnquiryForm, Draft, icons
+  motion/useHomeMotion.ts  GSAP/ScrollTrigger animation (lazy-loaded)
+  styles.css               design system
+public/                    fonts, favicon, robots.txt, _headers (copied to dist/)
+scripts/
+  media.mjs                scans media/, resizes images, writes the manifest
+  prerender.mjs            writes one HTML file per page plus sitemaps
+  http-test.mjs            HTTP integration tests (npm test)
+  media.test.mjs           media pipeline tests (npm run test:unit)
+worker/index.ts            Worker: serves dist/, maintenance mode, 404 handling
+wrangler.jsonc             Worker and assets config, MAINTENANCE_MODE variable
 ```
-
-The page is prerendered at build time, so its text, links and first photo are in
-the HTML before any JavaScript runs. React then hydrates it to run the slideshow.
 
 ## Commands
 
 ```sh
 npm install
-npm run dev         # Vite dev server with hot reload (no Worker, no 503)
-npm run typecheck   # tsc for app, worker and Vite config
-npm run lint        # ESLint
-npm run build       # typecheck + build + prerender → dist/
-npm run preview     # build, then run the real Worker locally (wrangler dev)
-npm test            # HTTP integration tests against dist/ (build first)
-npm run check       # typecheck + lint + build + test + `wrangler deploy --dry-run`
-npx wrangler deploy # production deploy (needs Cloudflare login/API token)
+npm run dev            # Vite dev server (no Worker, no prerender)
+npm run typecheck      # manifest + tsc
+npm run lint           # ESLint
+npm run test:unit      # media pipeline tests
+npm run build          # production build → dist/
+npm run build:preview  # preview build: drafts shown, noindex, robots disallow, no sitemap
+npm test               # HTTP integration tests against dist/ (build first)
+npm run check          # typecheck + lint + unit tests + build + HTTP tests + deploy dry-run
 ```
 
 ## Cloudflare Workers Builds settings
@@ -70,7 +65,7 @@ The Worker's name in the dashboard must match `"name"` in `wrangler.jsonc` (`ran
 Production state: **off**. The coming-soon page is served as a normal, indexable
 page. Set in `wrangler.jsonc` → `vars`:
 
-| `MAINTENANCE_MODE` | `/` | Unknown URLs | `/assets/*`, `favicon.ico`, `robots.txt`, `sitemap.xml` |
+| `MAINTENANCE_MODE` | `/` | Unknown URLs | `/assets/*`, `/_media/*`, `favicon.ico`, `robots.txt`, sitemaps |
 |---|---|---|---|
 | `"off"` (production) | **200** | **404** | 200 |
 | `"on"` | **503** + `Retry-After` | 503 (maintenance page) | 200 |

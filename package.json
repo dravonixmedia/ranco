@@ -4,16 +4,20 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir build-ssr && node scripts/prerender.mjs",
+    "dev": "node scripts/media.mjs build && vite",
+    "media": "node scripts/media.mjs build",
+    "build": "node scripts/media.mjs build && tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir build-ssr && node scripts/prerender.mjs && node scripts/media.mjs emit",
+    "build:preview": "VITE_SITE_ENV=preview npm run build",
     "preview": "npm run build && wrangler dev",
-    "typecheck": "tsc -b",
+    "typecheck": "node scripts/media.mjs manifest && tsc -b",
     "lint": "eslint .",
-    "check": "npm run typecheck && npm run lint && npm run build && npm test && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
-    "test": "node scripts/http-test.mjs"
+    "test:unit": "node --test scripts/*.test.mjs",
+    "test": "node scripts/http-test.mjs",
+    "check": "npm run typecheck && npm run lint && npm run test:unit && npm run build && npm test && wrangler deploy --dry-run",
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
+    "gsap": "^3.15.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
@@ -27,6 +31,7 @@
     "eslint": "^10.13.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
+    "sharp": "^0.34.5",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.2",
     "vite": "^8.3.4",

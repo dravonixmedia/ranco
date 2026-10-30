@@ -6,3 +6,6 @@
 
 /assets/*
   Cache-Control: public, max-age=604800
+
+/_media/*
+  Cache-Control: public, max-age=31536000, immutable

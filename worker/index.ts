@@ -38,6 +38,13 @@ export function retryAfterSeconds(value: string | undefined): string {
 
 export default {
   async fetch(request, env): Promise<Response> {
+    // The 404 page is a real file (dist/404.html); requested directly it must still be a 404.
+    const { pathname } = new URL(request.url)
+    if (pathname === '/404' || pathname === '/404.html') {
+      const page = await env.ASSETS.fetch(new Request(new URL('/404', request.url), request))
+      return new Response(page.body, { status: 404, statusText: 'Not Found', headers: page.headers })
+    }
+
     if (!isMaintenanceOn(env.MAINTENANCE_MODE)) return env.ASSETS.fetch(request)
 
     // Drop conditional headers so a cached copy can't turn the 503 into a 304.

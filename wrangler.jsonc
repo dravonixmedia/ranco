@@ -9,11 +9,12 @@
     "directory": "./dist",
     "binding": "ASSETS",
     // Page requests go through the Worker (to apply MAINTENANCE_MODE);
-    // images, fonts, scripts, favicon.ico, robots.txt and sitemap.xml are
-    // always served straight from assets with 200, never as a 503 page.
-    // No SPA fallback: the site has no client-side routes, so unknown URLs
-    // and missing files return 404 while maintenance is off.
-    "run_worker_first": ["/*", "!/assets/*", "!/favicon.ico", "!/robots.txt", "!/sitemap.xml"]
+    // images (/_media, /assets), fonts, scripts, favicon.ico, robots.txt and
+    // the sitemaps are always served straight from assets, never as a 503 page.
+    // Each page is its own prerendered HTML file. Unknown URLs get the real
+    // 404 page (dist/404.html) with a 404 status; no SPA fallback.
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/*", "!/assets/*", "!/_media/*", "!/favicon.ico", "!/robots.txt", "!/sitemap.xml", "!/sitemap.txt"]
   },
   "vars": {
     // Production state: OFF. The coming-soon page is served as a normal,
