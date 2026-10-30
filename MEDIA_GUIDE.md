@@ -21,7 +21,7 @@ new address, so visitors never see an old cached version.
 |---|---|---|
 | `media/home/hero/` | Full-screen homepage photo | Landscape, 2400 × 1600 px or larger |
 | `media/home/introduction/` | Homepage introduction | Portrait 4:5, 1600 px tall or larger |
-| `media/home/storytelling/` | "Your Vision. Our Craft. Your Home." | Three landscape photos, 2400 px wide: `01-` Vision, `02-` Craft, `03-` Home |
+| `media/home/storytelling/` | "Your Vision. Our Craft. Your Home." (while empty, the 2nd–4th hero photos are used) | Three landscape photos, 2400 px wide: `01-` Vision, `02-` Craft, `03-` Home |
 | `media/home/closing/` | Background of the final contact section | Landscape, 2400 px wide |
 | `media/home/services/` | Services section background | Landscape, 2000 px wide |
 | `media/services/<service>/` | Service pages and service hover images | Landscape, 1600 px wide |

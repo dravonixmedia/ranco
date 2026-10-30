@@ -5,7 +5,7 @@ import { ArrowIcon, ArrowUpRightIcon, PhoneIcon, WhatsAppIcon } from '../compone
 import { Picture } from '../components/Picture'
 import { AREAS, CONTACT_COPY, FAQS, INTRO, PRINCIPLES, PROCESS, SERVICE_SUMMARIES, STORY } from '../content/home'
 import { IS_PREVIEW, SERVICES, SITE, isVisible } from '../content/site'
-import { getImage, getImages, getPublishedProjects } from '../media'
+import { getImage, getImagesOr, getPublishedProjects } from '../media'
 import { useHomeMotion } from '../motion/useHomeMotion'
 
 export function HomePage() {
@@ -14,7 +14,8 @@ export function HomePage() {
 
   const services = SERVICES.filter((s) => isVisible(s.status))
   const projects = getPublishedProjects()
-  const storyImages = getImages('home/storytelling')
+  // Until story photos are uploaded, the hero folder's 2nd, 3rd and 4th photos are used (see MEDIA_GUIDE.md).
+  const storyImages = getImagesOr('home/storytelling', 'home/hero', 1)
   const introImage = getImage('home/introduction')
 
   return (
