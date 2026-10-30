@@ -31,5 +31,15 @@
     // Retry-After in seconds, used only while "on" (259200 = 3 days).
     // Invalid values fall back to 3 days.
     "MAINTENANCE_RETRY_AFTER_SECONDS": "259200"
+  },
+  // Worker Previews (npx wrangler preview, run by Workers Builds for branches
+  // other than main). Previews do not inherit the top-level vars, so they are
+  // repeated here: without MAINTENANCE_MODE the fail-safe would show the 503
+  // page. Production (npx wrangler deploy) uses only the top-level settings.
+  "previews": {
+    "vars": {
+      "MAINTENANCE_MODE": "off",
+      "MAINTENANCE_RETRY_AFTER_SECONDS": "259200"
+    }
   }
 }

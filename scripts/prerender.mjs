@@ -26,8 +26,12 @@ for (const page of pages) {
 }
 
 if (preview) {
-  // Preview builds must never be indexed.
+  // Preview builds must never be indexed: robots.txt blocks crawling, and every
+  // response (pages and files) carries X-Robots-Tag in addition to the meta tag.
   await writeFile(path.join(dist, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
+  const headers = path.join(dist, '_headers')
+  const existing = await readFile(headers, 'utf8')
+  await writeFile(headers, existing.replace('/*\n', '/*\n  X-Robots-Tag: noindex, nofollow\n'))
   await rm(path.join(dist, 'sitemap.xml'), { force: true })
   await rm(path.join(dist, 'sitemap.txt'), { force: true })
 } else {

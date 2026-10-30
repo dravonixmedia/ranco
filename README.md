@@ -46,15 +46,23 @@ npm run check          # typecheck + lint + unit tests + build + HTTP tests + de
 
 ## Cloudflare Workers Builds settings
 
-Workers & Pages → the `ranco` Worker → Settings → Build:
+Workers & Pages → the `ranco` Worker → Settings → Build. Workers Builds keeps two
+separate triggers:
 
-| Setting | Value |
-|---|---|
-| Git repository | `dravonixmedia/ranco` |
-| Branch | `main` |
-| Build command | `npm run build` |
-| Deploy command | `npx wrangler deploy` |
-| Root directory | `/` (blank) |
+| Trigger | Branch | Build command | Deploy command |
+|---|---|---|---|
+| Production | `main` | `npm run build` | `npx wrangler deploy` |
+| Previews Base (preview builds) | every other branch | `npm run build:preview` | `npx wrangler preview` |
+
+`npx wrangler preview` creates a Worker Preview (its own workers.dev URL) and never
+replaces production. Previews take their settings from the `previews` block in
+`wrangler.jsonc`, not the top level.
+
+`scripts/ci-guard.mjs` checks the branch Workers Builds reports: the production
+build refuses to run on any branch but `main`, and the preview build refuses to run
+on `main`. A mixed-up dashboard setting therefore fails the build instead of
+publishing the wrong site. Preview builds are never indexed (`X-Robots-Tag`,
+`noindex` meta, `robots.txt` disallow, no sitemap).
 
 Node.js 22 is pinned in `.node-version` (Vite 8 needs Node 20.19+ or 22.12+).
 
