@@ -213,7 +213,7 @@ main:focus{outline:none}
 .areas__intro{margin-top:22px;max-width:26em;color:var(--on-dark-muted)}
 .districts{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(24px,3vw,48px)}
 .district{border-top:1px solid var(--line-light);padding:26px 0 34px}
-.district__name{font-family:var(--serif);font-weight:500;font-size:clamp(30px,3vw,48px);line-height:1.05}
+.district__name{font-family:var(--serif);font-weight:500;font-size:clamp(32px,3.4vw,56px);line-height:1.05}
 .district__text{margin-top:10px;font-size:15px;color:var(--on-dark-muted);max-width:24em}
 @media (max-width:899px){.areas__grid{grid-template-columns:1fr}}
 @media (max-width:599px){.districts{grid-template-columns:1fr}.district{padding:22px 0 26px}}
@@ -257,6 +257,7 @@ main:focus{outline:none}
 @media (max-width:899px){.contact__grid{grid-template-columns:1fr}}
 
 /* ── Motion (only when the motion system is active) ─────────────────── */
+/* Hero entrance: short, CSS only. */
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @keyframes settle{from{transform:scale(1.06)}to{transform:none}}
 .motion .hero__media img{animation:settle 1.8s var(--ease) both}
@@ -266,11 +267,51 @@ main:focus{outline:none}
 .motion .hero__lede{animation-delay:.3s}
 .motion .hero__actions{animation-delay:.4s}
 .motion .hero__statement{animation-delay:.5s}
-.motion [data-reveal]{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.motion [data-reveal="image"]{transform:none}
-.motion [data-reveal="image"] img{transform:scale(1.05);transition:transform 1.6s var(--ease)}
+
+/* Headings: one quiet rise as they arrive (IntersectionObserver). */
+.motion [data-reveal]{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .motion [data-reveal].is-in{opacity:1;transform:none}
-.motion [data-reveal].is-in img{transform:none}
+.motion .portfolio__item:nth-child(2n){transition-delay:.12s}
+
+/*
+ * Section transitions, driven by scroll progress (see useScrollProgress.ts):
+ * --p goes 0 → 1 as an element arrives, --q 0 → 1 as the hero leaves.
+ * Defaults are the finished state, so without motion nothing changes.
+ */
+@property --p{syntax:"<number>";inherits:true;initial-value:1}
+@property --q{syntax:"<number>";inherits:true;initial-value:0}
+@keyframes scroll-p{from{--p:0}to{--p:1}}
+@keyframes scroll-q{from{--q:0}to{--q:1}}
+@supports (animation-timeline:view()){
+  .motion [data-scroll="enter"]{animation:scroll-p linear both;animation-timeline:view();animation-range:entry 0% entry 55vh}
+  .motion [data-scroll="cover"]{animation:scroll-p linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  .motion [data-scroll="exit"]{animation:scroll-q linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
+}
+.motion .home{background:var(--ink)}
+
+/* 1. Hero → About: the photograph eases forward and dims; About opens like a widening panel. */
+.motion .hero__media{transform:translateY(calc(var(--q,0) * 10%)) scale(calc(1 + var(--q,0) * .08));will-change:transform}
+.motion .hero__inner,.motion .hero__statement{z-index:1;transform:translateY(calc(var(--q,0) * -14vh));opacity:calc(1 - var(--q,0) * 1.4)}
+.motion .hero::after{content:"";position:absolute;inset:0;background:var(--ink);opacity:calc(var(--q,0) * .55);pointer-events:none}
+.motion .about{clip-path:inset(0 calc((1 - var(--p,1)) * 7vw))}
+.motion .about__figure .picture{clip-path:inset(calc((1 - var(--p,1)) * 100%) 0 0 0)}
+.motion .about__figure img{transform:scale(calc(1 + (1 - var(--p,1)) * .14))}
+
+/* 2. About → Services: the service photograph is drawn open from the left. */
+.motion .feature__figure .picture{clip-path:inset(0 calc((1 - var(--p,1)) * 100%) 0 0)}
+.motion .feature__figure img{transform:translateX(calc((1 - var(--p,1)) * -6%)) scale(calc(1.08 - var(--p,1) * .08))}
+
+/* 3. Projects (only when published): gentle parallax inside each cover. */
+.motion .portfolio [data-scroll="cover"] img{transform:translateY(calc((.5 - var(--p,.5)) * 10%)) scale(1.12)}
+
+/* 4. Into Where We Work: the charcoal panel grows to full width; districts rise in sequence. */
+.motion .areas{clip-path:inset(calc((1 - var(--p,1)) * 8vh) calc((1 - var(--p,1)) * 6vw) 0)}
+.motion .district{transform:translateY(calc((1 - var(--p,1)) * (36px + var(--i,0) * 26px)));opacity:calc(.1 + var(--p,1) * .9)}
+
+/* 5. Contact: the closing photograph opens out and settles. Actions below are never animated. */
+.motion .contact__banner{clip-path:inset(0 calc((1 - var(--p,1)) * 8vw))}
+.motion .contact__banner>.picture{transform:scale(calc(1 + (1 - var(--p,1)) * .12))}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }

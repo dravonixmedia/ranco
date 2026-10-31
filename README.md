@@ -18,7 +18,7 @@ src/
   generated/media.ts       image manifest, generated on every build (not committed)
   pages/                   HomePage, NotFoundPage
   components/              header, footer, Picture, EnquiryForm, Draft, icons
-  motion/useReveal.ts      quiet entrance reveals (IntersectionObserver + CSS)
+  motion/                  heading reveals and scroll-linked section transitions (no library)
   styles.css               design system
 public/                    fonts, favicon, robots.txt, _headers (copied to dist/)
 scripts/

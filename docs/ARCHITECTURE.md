@@ -48,17 +48,27 @@ discovered from folders but published only when `project.json` is complete,
 valid and `"published": true`. Tests: `scripts/media.test.mjs`. User guide:
 `MEDIA_GUIDE.md`.
 
-### Motion (`src/motion/useReveal.ts`)
-Deliberately quiet, with no animation library (GSAP was removed in Version 4)
-and native scrolling throughout.
+### Motion (`src/motion/useReveal.ts`, `src/motion/useScrollProgress.ts`)
+Deliberately light, with no animation library (GSAP was removed in Version 4),
+no pinning and native scrolling throughout.
 
-- **Hero:** a short CSS entrance: the photograph settles and the headline,
-  text and buttons rise in, all within about a second.
-- **Sections:** elements marked `data-reveal` fade and rise once as they enter
-  the screen (one IntersectionObserver, CSS transitions); photographs marked
-  `data-reveal="image"` settle gently.
-- **Fallbacks:** reduced-motion users, no-JavaScript visitors, and a 3-second
-  safety timeout all see static, fully visible content.
+- **Hero entrance:** a short CSS animation (about one second).
+- **Section transitions (Version 4.1):** elements marked `data-scroll` expose
+  their scroll progress to CSS as `--p` (arriving) or `--q` (the hero leaving),
+  and CSS draws the transitions with transforms, opacity and a few clip-paths:
+  hero eases forward and dims → About opens as a widening panel and its
+  photograph is unmasked upward → the service photograph is drawn open from the
+  left → (published projects only: staggered covers with gentle parallax) → the
+  charcoal Where We Work panel grows to full width while the districts rise in
+  sequence → the contact photograph opens out. Contact actions are never animated.
+- **How progress is produced:** browsers with native scroll-driven animations
+  (`animation-timeline: view()`) animate the registered `--p`/`--q` properties
+  in CSS alone. Others use `useScrollProgress`: one passive scroll listener,
+  batched per animation frame, measuring only elements near the screen.
+- **Headings:** a single rise as they arrive (one IntersectionObserver).
+- **Fallbacks:** the CSS defaults are the finished state, so reduced-motion
+  users, no-JavaScript visitors and the 3-second safety timeout see complete,
+  static compositions.
 
 ### Enquiries
 `EnquiryForm` validates name, phone, district, work type and details, then

@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, type CSSProperties } from 'react'
 import { Draft } from '../components/Draft'
 import { EnquiryForm } from '../components/EnquiryForm'
 import { ArrowIcon, PhoneIcon, WhatsAppIcon } from '../components/Icons'
@@ -8,12 +8,14 @@ import { SHOW_PROJECTS } from '../content/nav'
 import { SERVICES, SITE, isVisible } from '../content/site'
 import { getImage, getImagesOr, getPublishedProjects } from '../media'
 import { useReveal } from '../motion/useReveal'
+import { useScrollProgress } from '../motion/useScrollProgress'
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
 export function HomePage() {
   const root = useRef<HTMLDivElement>(null)
   useReveal(root)
+  useScrollProgress(root)
 
   const hero = getImage('home/hero')
   // Until their own folders have photos, these slots reuse hero photographs (see MEDIA_GUIDE.md).
@@ -28,7 +30,7 @@ export function HomePage() {
   return (
     <div ref={root} className="home">
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="hero" data-theme="dark" aria-labelledby="hero-title">
+      <section className="hero" data-theme="dark" data-scroll="exit" aria-labelledby="hero-title">
         <div className="hero__media">
           <Picture image={hero} folder="home/hero" sizes="100vw" priority cover />
         </div>
@@ -54,10 +56,10 @@ export function HomePage() {
       </section>
 
       {/* ── About ────────────────────────────────────────────── */}
-      <section id="about" className="section about" data-theme="light" aria-labelledby="about-title">
+      <section id="about" className="section about" data-theme="light" data-scroll="enter" aria-labelledby="about-title">
         <div className="container about__grid">
           <div className="about__text">
-            <p className="eyebrow" data-reveal="">
+            <p className="eyebrow">
               About RANCO
             </p>
             <h2 id="about-title" className="about__statement" data-reveal="">
@@ -66,12 +68,12 @@ export function HomePage() {
             <div className="about__copy">
               {ABOUT.paragraphs.map((p) => (
                 <Draft key={p.text} status={p.status}>
-                  <p data-reveal="">{p.text}</p>
+                  <p>{p.text}</p>
                 </Draft>
               ))}
             </div>
           </div>
-          <figure className="about__figure" data-reveal="image">
+          <figure className="about__figure" data-scroll="enter">
             <Picture image={aboutImage} folder="home/about" sizes="(min-width: 1024px) 42vw, 100vw" decorative />
           </figure>
         </div>
@@ -81,7 +83,7 @@ export function HomePage() {
       <section id="services" className="section services" data-theme="light" aria-labelledby="services-title">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow" data-reveal="">
+            <p className="eyebrow">
               What We Do
             </p>
             <h2 id="services-title" className="section-title" data-reveal="">
@@ -89,7 +91,7 @@ export function HomePage() {
             </h2>
           </div>
           <article className="feature">
-            <figure className="feature__figure" data-reveal="image">
+            <figure className="feature__figure" data-scroll="enter">
               <Picture image={featuredImage} folder={`services/${featured.slug}`} sizes="(min-width: 1024px) 56vw, 100vw" decorative />
             </figure>
             <div className="feature__text" data-reveal="">
@@ -104,7 +106,7 @@ export function HomePage() {
           {others.length > 0 && (
             <ol className="service-list">
               {others.map((s, i) => (
-                <li key={s.slug} data-reveal="">
+                <li key={s.slug}>
                   <Draft status={s.status}>
                     <div className="service-list__row">
                       <span className="service-list__n">{pad(i + 2)}</span>
@@ -125,7 +127,7 @@ export function HomePage() {
           <div className="container">
             <div className="section-head section-head--row">
               <div>
-                <p className="eyebrow" data-reveal="">
+                <p className="eyebrow">
                   Our Projects
                 </p>
                 <h2 id="projects-title" className="section-title" data-reveal="">
@@ -136,8 +138,8 @@ export function HomePage() {
             {projects.length > 0 ? (
               <ul className="portfolio">
                 {projects.slice(0, 4).map((p) => (
-                  <li key={p.slug} className="portfolio__item" data-reveal="image">
-                    <figure>
+                  <li key={p.slug} className="portfolio__item" data-reveal="">
+                    <figure data-scroll="cover">
                       <Picture image={getImage(`projects/${p.slug}/cover`)} folder={`projects/${p.slug}/cover`} sizes="(min-width: 768px) 50vw, 100vw" />
                     </figure>
                     <p className="portfolio__meta">
@@ -148,7 +150,7 @@ export function HomePage() {
                 ))}
               </ul>
             ) : (
-              <div className="empty-state" data-reveal="">
+              <div className="empty-state">
                 <p className="empty-state__title">Verified RANCO projects will appear here.</p>
                 <p>
                   Add a folder under <code>media/projects/</code> with photographs and a completed <code>project.json</code>, then set{' '}
@@ -162,22 +164,22 @@ export function HomePage() {
       )}
 
       {/* ── Where we work ───────────────────────────────────── */}
-      <section id="areas" className="section areas" data-theme="dark" aria-labelledby="areas-title">
+      <section id="areas" className="section areas" data-theme="dark" data-scroll="enter" aria-labelledby="areas-title">
         <div className="container areas__grid">
           <div className="areas__head">
-            <p className="eyebrow" data-reveal="">
+            <p className="eyebrow">
               Where We Work
             </p>
             <h2 id="areas-title" className="section-title" data-reveal="">
               Four districts of central Kerala
             </h2>
-            <p className="areas__intro" data-reveal="">
+            <p className="areas__intro">
               {AREAS_INTRO}
             </p>
           </div>
-          <ul className="districts">
-            {AREAS.map((a) => (
-              <li key={a.district} className="district" data-reveal="">
+          <ul className="districts" data-scroll="enter">
+            {AREAS.map((a, i) => (
+              <li key={a.district} className="district" style={{ '--i': i } as CSSProperties}>
                 <h3 className="district__name">{a.district}</h3>
                 <p className="district__text">{a.text}</p>
               </li>
@@ -213,17 +215,17 @@ export function HomePage() {
 
       {/* ── Contact ─────────────────────────────────────────── */}
       <section id="contact" className="contact" data-theme="dark" aria-labelledby="contact-title">
-        <div className="contact__banner">
+        <div className="contact__banner" data-scroll="enter">
           <Picture image={closingImage} folder="home/closing" sizes="100vw" cover decorative />
           <div className="contact__shade" aria-hidden="true" />
           <div className="container contact__head">
-            <p className="eyebrow eyebrow--light" data-reveal="">
+            <p className="eyebrow eyebrow--light">
               Contact
             </p>
             <h2 id="contact-title" className="contact__title" data-reveal="">
               {CONTACT_COPY.heading}
             </h2>
-            <p className="contact__lede" data-reveal="">
+            <p className="contact__lede">
               {CONTACT_COPY.text}
             </p>
           </div>
