@@ -12,51 +12,21 @@ export const SERVICE_SUMMARIES: Record<string, string> = {
   'repair-maintenance': 'Repairs, repainting and upkeep that keep a home sound between larger projects.',
 }
 
-/**
- * Version 3 scene copy. Statements are written as lines of type: each inner
- * array is one line, and `accent` marks the italic word. They describe the
- * experience of building a home and make no claims about RANCO's history,
- * scale or credentials. Anything that could read as a claim carries a status.
- */
-export interface Line {
-  text: string
-  /** Word (exact substring of text) set in the italic accent. */
-  accent?: string
+export const ABOUT = {
+  statement: 'Homes shaped around the families who live in them.',
+  paragraphs: [
+    {
+      status: 'confirmed' as Status,
+      text: 'RANCO works with homeowners in Kottayam, Pathanamthitta, Idukki and Ernakulam to renovate and improve the homes they love.',
+    },
+    {
+      status: 'draft' as Status,
+      text: 'Every project begins with a conversation about how your family lives, what the house needs and what you would like it to become. From there, the work is planned carefully and you are kept informed at every stage.',
+    },
+  ],
 }
 
-export const SCENES = {
-  gallery: {
-    lines: [{ text: 'A home begins' }, { text: 'long before' }, { text: 'the foundation', accent: 'foundation' }] as Line[],
-  },
-  vision: {
-    title: [{ text: 'Your' }, { text: 'Vision', accent: 'Vision' }] as Line[],
-    lede: 'It begins with how you want to live: the rooms, the light, the way your family gathers.',
-    text: 'Every project begins with a conversation about how your family lives, what the house needs and what you would like it to become.',
-    status: 'draft' as Status,
-  },
-  craft: {
-    title: [{ text: 'Our' }, { text: 'Craft', accent: 'Craft' }] as Line[],
-    text: 'Thoughtful design and quality workmanship turn that vision into something real.',
-    materials: [
-      { name: 'Laterite', note: 'The red stone of Kerala’s older homes, renewed with care.' },
-      { name: 'Timber', note: 'Doors, windows and ceilings with warmth and character.' },
-      { name: 'Clay tile', note: 'Pitched roofs made for heavy monsoon rain.' },
-      { name: 'Light', note: 'Courtyards, verandahs and openings that let a house breathe.' },
-    ],
-    materialsStatus: 'draft' as Status,
-  },
-  walkthrough: {
-    title: [{ text: 'Your' }, { text: 'Home', accent: 'Home' }] as Line[],
-    text: 'A place that feels like yours from the very first morning.',
-    note: 'Illustrative photography',
-  },
-  areas: {
-    title: [{ text: 'Where we' }, { text: 'Build', accent: 'Build' }] as Line[],
-    text: 'RANCO serves homeowners across four districts of central Kerala.',
-  },
-  statement: [{ text: 'Crafting spaces.' }, { text: 'Creating', accent: 'Creating' }, { text: 'dreams.' }] as Line[],
-  closing: [{ text: 'Let’s begin' }, { text: 'your dream', accent: 'dream' }, { text: 'home' }] as Line[],
-}
+export const AREAS_INTRO = 'RANCO serves homeowners across four districts of central Kerala. If your home is nearby, call or message to ask.'
 
 /** General observations about each district's homes, not claims about RANCO's project history. */
 export const AREAS = [
@@ -112,6 +82,6 @@ export const FAQS: Faq[] = [
 ]
 
 export const CONTACT_COPY = {
-  heading: 'Discuss Your Project',
+  heading: 'Let’s Build Together',
   text: 'Tell us about your home and what you would like to change. Call us, or send the details on WhatsApp.',
 }

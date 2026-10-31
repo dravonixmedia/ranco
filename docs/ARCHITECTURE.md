@@ -48,17 +48,15 @@ discovered from folders but published only when `project.json` is complete,
 valid and `"published": true`. Tests: `scripts/media.test.mjs`. User guide:
 `MEDIA_GUIDE.md`.
 
-### Motion (`src/motion/useHomeMotion.ts`)
-GSAP, ScrollTrigger and SplitText, loaded as a separate chunk after hydration.
-Lenis is not used: native scrolling keeps touch, keyboard, anchor links and
-accessibility intact.
+### Motion (`src/motion/useReveal.ts`)
+Deliberately quiet, with no animation library (GSAP was removed in Version 4)
+and native scrolling throughout.
 
-- **Hero:** image settles, navigation fades in, headline reveals line by line,
-  then the statement and the buttons.
-- **Headings:** masked line reveals; content: short staggered fade-ups.
-- **Tablet and up:** subtle image parallax.
-- **Desktop (1024 px and up):** one short pinned sequence, "Your Vision. Our
-  Craft. Your Home.". Smaller screens get simple reveals with no pinning.
+- **Hero:** a short CSS entrance: the photograph settles and the headline,
+  text and buttons rise in, all within about a second.
+- **Sections:** elements marked `data-reveal` fade and rise once as they enter
+  the screen (one IntersectionObserver, CSS transitions); photographs marked
+  `data-reveal="image"` settle gently.
 - **Fallbacks:** reduced-motion users, no-JavaScript visitors, and a 3-second
   safety timeout all see static, fully visible content.
 

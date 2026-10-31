@@ -1,5 +1,5 @@
 import { SITE } from '../content/site'
-import { CHAPTERS } from '../content/chapters'
+import { NAV } from '../content/nav'
 
 export function SiteFooter() {
   return (
@@ -37,19 +37,19 @@ export function SiteFooter() {
             </ul>
           </div>
           <div>
-            <h2 className="site-footer__heading">Chapters</h2>
+            <h2 className="site-footer__heading">Explore</h2>
             <ul className="site-footer__list">
-              {CHAPTERS.map((c) => (
-                <li key={c.id}>
-                  <a href={`/#${c.id}`}>{c.label}</a>
+              {NAV.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href}>{item.label}</a>
                 </li>
               ))}
+              <li>
+                <a href="/#contact">Contact</a>
+              </li>
             </ul>
           </div>
         </div>
-        <span className="site-footer__mark" aria-hidden="true">
-          {SITE.name}
-        </span>
         <div className="site-footer__base">
           <p>© {new Date().getFullYear()} {SITE.name}. All Rights Reserved.</p>
           <a href="https://ranco.in/">ranco.in</a>

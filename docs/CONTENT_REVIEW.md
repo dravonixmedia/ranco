@@ -34,19 +34,17 @@ Also confirm: anything RANCO does **not** do (for example structural
 engineering design, building permits or approvals), so no page implies it.
 
 ### Homepage copy
-- Chapter 01, Your Vision: "Every project begins with a conversation about how
-  your family lives, what the house needs and what you would like it to become."
-- Chapter 02, Our Craft, material notes (laterite, timber, clay tile, light).
-  They describe Kerala homes generally; confirm RANCO is comfortable being
-  associated with each material.
+- About, second paragraph: "Every project begins with a conversation about how
+  your family lives, what the house needs and what you would like it to become.
+  From there, the work is planned carefully and you are kept informed at every
+  stage."
 - FAQ "How do I request a site visit?"
 
-The scene statements ("A home begins long before the foundation", "Your
-Vision", "Our Craft", "Your Home", "Where we build", "Let's begin your dream
-home") make no factual claims and are published. Tell us if any should change.
+The About statement ("Homes shaped around the families who live in them.") and
+the section headings make no factual claims and are published.
 
-The "Why RANCO" principles and the seven-stage process from Version 2 are no
-longer on the homepage. They can return on interior pages once confirmed.
+The "Why RANCO" principles and the seven-stage process are not on the homepage.
+They can return on interior pages once confirmed.
 
 ### Business details not yet available
 - Registered business name and legal entity (for the privacy policy).
@@ -63,10 +61,8 @@ longer on the homepage. They can return on interior pages once confirmed.
 The four existing photographs (`media/home/hero/`) came with the original
 maintenance page. Their source is not documented, and one carries a small
 bookmark icon in the corner, which suggests it was saved from a social or
-inspiration site. They are used only as general imagery (the opening, gallery and walkthrough,
-captioned "Illustrative photography" where shown as plates), never as RANCO
-projects. Until more photographs arrive, the same four images appear in
-several chapters. Please confirm RANCO has the right to use them, or supply RANCO's own
+inspiration site. They are used only as general imagery (hero, About, What We Do and Contact),
+never as RANCO projects. Please confirm RANCO has the right to use them, or supply RANCO's own
 photographs.
 
 ### Enquiry form
