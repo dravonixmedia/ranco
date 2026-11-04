@@ -11,40 +11,31 @@ To publish a confirmed item, change its `status` from `"draft"` to
 ## Verified (published)
 
 - Brand name **RANCO**; tagline "Your Dream Home Partner | Kerala".
-- Headline "Build Your Dream Home With Us."; statement "Crafting Spaces.
-  Creating Dreams."; approved description and SEO title and description.
+- Version 4.2 positioning, supplied by RANCO: headline "From Your First Idea
+  to Your Dream Home."; "New Home Construction & Heritage Home Renovation
+  Across Central Kerala."; the About, journey, service and contact wording.
+- Two services: **New Home Construction** and **Heritage Home Renovation**.
 - Phone and WhatsApp: +91 98466 67095.
-- Service districts (from the brief): Kottayam, Pathanamthitta, Idukki,
-  Ernakulam. No offices or branches in these districts are claimed.
-- Service: **Home Renovation** (from the original brief, "villa & apartment
-  renovation").
+- Service districts: Kottayam, Pathanamthitta, Idukki, Ernakulam (Central
+  Kerala). These are service areas; no offices or branches are claimed.
+- FAQ answers contain only general guidance and the contact details above.
 
 ## Awaiting confirmation
 
-### Services
-| Service | Question for the client |
-|---|---|
-| Home Construction | Does RANCO build new houses? |
-| House Extensions | Are extensions offered? |
-| Roofing & Waterproofing | Offered as a standalone service? |
-| Kitchen & Bathroom Renovation | Offered as a standalone service? |
-| Repair & Maintenance | Are small repairs and maintenance offered? |
+### Who does what in the journey (preview-only notes)
+The journey stages are published as a description of how a home comes
+together. Before any wording says RANCO itself does them, please confirm:
+- **Planning & Design:** does RANCO provide architectural design directly, or
+  coordinate it through qualified professionals (architects, engineers)?
+- **Drawings & Approvals:** who prepares the drawings and handles building
+  permits and approvals?
 
-Also confirm: anything RANCO does **not** do (for example structural
-engineering design, building permits or approvals), so no page implies it.
+Also confirm anything RANCO does **not** do, so no page implies it.
 
-### Homepage copy
-- About, second paragraph: "Every project begins with a conversation about how
-  your family lives, what the house needs and what you would like it to become.
-  From there, the work is planned carefully and you are kept informed at every
-  stage."
-- FAQ "How do I request a site visit?"
-
-The About statement ("Homes shaped around the families who live in them.") and
-the section headings make no factual claims and are published.
-
-The "Why RANCO" principles and the seven-stage process are not on the homepage.
-They can return on interior pages once confirmed.
+### Removed from the site
+The earlier service list (house extensions, roofing and waterproofing, kitchen
+and bathroom renovation, repair and maintenance) is no longer shown. Tell us
+if any of these should return as part of the two signature services.
 
 ### Business details not yet available
 - Registered business name and legal entity (for the privacy policy).
@@ -61,8 +52,11 @@ They can return on interior pages once confirmed.
 The four existing photographs (`media/home/hero/`) came with the original
 maintenance page. Their source is not documented, and one carries a small
 bookmark icon in the corner, which suggests it was saved from a social or
-inspiration site. They are used only as general imagery (hero, About, What We Do and Contact),
-never as RANCO projects. Please confirm RANCO has the right to use them, or supply RANCO's own
+inspiration site. They are used only as general imagery (hero, About, the two services and
+Contact), never as RANCO projects. **The Version 4.2 brief requires confirmed
+usage rights for every published image**, so these must be confirmed or
+replaced before launch; the files have been renamed (the word "villa" no
+longer appears anywhere). Please confirm RANCO has the right to use them, or supply RANCO's own
 photographs.
 
 ### Enquiry form

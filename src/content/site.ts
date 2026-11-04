@@ -18,7 +18,10 @@ export const SITE = {
   url: 'https://ranco.in',
   tagline: 'Your Dream Home Partner',
   region: 'Kerala',
-  headline: 'Build Your Dream Home With Us.',
+  headline: 'From Your First Idea to Your Dream Home.',
+  /** One-line positioning: the two signature services and the region. */
+  positioning: 'New Home Construction & Heritage Home Renovation Across Central Kerala.',
+  regionLong: 'Central Kerala',
   statement: 'Crafting Spaces. Creating Dreams.',
   phone: {
     display: '+91 98466 67095',

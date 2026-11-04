@@ -3,10 +3,10 @@ import { Draft } from '../components/Draft'
 import { EnquiryForm } from '../components/EnquiryForm'
 import { ArrowIcon, PhoneIcon, WhatsAppIcon } from '../components/Icons'
 import { Picture } from '../components/Picture'
-import { ABOUT, AREAS, AREAS_INTRO, CONTACT_COPY, FAQS, SERVICE_SUMMARIES } from '../content/home'
+import { ABOUT, AREAS, AREAS_INTRO, AREAS_TITLE, CONTACT_COPY, EXPERTISE, FAQS, JOURNEY } from '../content/home'
 import { SHOW_PROJECTS } from '../content/nav'
-import { SERVICES, SITE, isVisible } from '../content/site'
-import { getImage, getImagesOr, getPublishedProjects } from '../media'
+import { IS_PREVIEW, SERVICES, SITE } from '../content/site'
+import { getImage, getImages, getImagesOr, getPublishedProjects } from '../media'
 import { useReveal } from '../motion/useReveal'
 import { useScrollProgress } from '../motion/useScrollProgress'
 
@@ -17,14 +17,17 @@ export function HomePage() {
   useReveal(root)
   useScrollProgress(root)
 
-  const hero = getImage('home/hero')
+  const heroPhotos = getImages('home/hero')
+  const hero = heroPhotos[0]
   // Until their own folders have photos, these slots reuse hero photographs (see MEDIA_GUIDE.md).
   const aboutImage = getImagesOr('home/about', 'home/hero', 2)[0]
-  const closingImage = getImagesOr('home/closing', 'home/hero', 3)[0]
-  const services = SERVICES.filter((s) => isVisible(s.status))
-  const featured = services.find((s) => s.status === 'confirmed') ?? services[0]
-  const others = services.filter((s) => s !== featured)
-  const featuredImage = getImage(`services/${featured.slug}`) ?? getImagesOr('home/services', 'home/hero', 1)[0]
+  const closingImage = getImagesOr('home/closing', 'home/hero')[0]
+  const journeyImages = getImages('home/journey')
+  const [construction, heritage] = SERVICES
+  const serviceImages = {
+    [construction.slug]: getImagesOr(`services/${construction.slug}`, 'home/hero', 1),
+    [heritage.slug]: getImagesOr(`services/${heritage.slug}`, 'home/hero', 3),
+  }
   const projects = getPublishedProjects()
 
   return (
@@ -37,39 +40,36 @@ export function HomePage() {
         <div className="hero__shade" aria-hidden="true" />
         <div className="container hero__inner">
           <h1 id="hero-title" className="hero__title">
-            <span className="hero__line">Build Your</span> <span className="hero__line hero__line--accent">Dream Home</span>{' '}
-            <span className="hero__line">With Us.</span>
+            <span className="hero__line">From Your First Idea</span>{' '}
+            <span className="hero__line">
+              to Your <em className="hero__accent">Dream Home.</em>
+            </span>
           </h1>
-          <p className="hero__lede">
-            Home renovation for families in {SITE.districts.slice(0, -1).join(', ')} and {SITE.districts.at(-1)}.
-          </p>
+          <p className="hero__lede">{SITE.positioning}</p>
           <div className="hero__actions">
             <a className="btn btn--gold" href="#contact">
-              Discuss your project <ArrowIcon />
+              Discuss Your Project <ArrowIcon />
             </a>
-            <a className="text-link text-link--light" href={SITE.phone.tel}>
-              <PhoneIcon /> {SITE.phone.display}
+            <a className="btn btn--outline-light" href={SITE.phone.tel}>
+              <PhoneIcon /> Call RANCO
             </a>
           </div>
         </div>
-        <p className="container hero__statement">{SITE.statement}</p>
+        <p className="container hero__statement">{SITE.districts.join(' · ')}</p>
       </section>
 
-      {/* ── About ────────────────────────────────────────────── */}
+      {/* ── About RANCO ─────────────────────────────────────── */}
       <section id="about" className="section about" data-theme="light" data-scroll="enter" aria-labelledby="about-title">
         <div className="container about__grid">
           <div className="about__text">
-            <p className="eyebrow">
-              About RANCO
-            </p>
+            <p className="eyebrow">About RANCO</p>
             <h2 id="about-title" className="about__statement" data-reveal="">
-              {ABOUT.statement}
+              {ABOUT.title}
             </h2>
+            <p className="about__lead">{ABOUT.text}</p>
             <div className="about__copy">
-              {ABOUT.paragraphs.map((p) => (
-                <Draft key={p.text} status={p.status}>
-                  <p>{p.text}</p>
-                </Draft>
+              {ABOUT.message.map((p) => (
+                <p key={p}>{p}</p>
               ))}
             </div>
           </div>
@@ -79,103 +79,151 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ── What we do ──────────────────────────────────────── */}
-      <section id="services" className="section services" data-theme="light" aria-labelledby="services-title">
+      {/* ── From idea to handover ───────────────────────────── */}
+      <section id="journey" className="section journey" data-theme="dark" aria-labelledby="journey-title">
         <div className="container">
-          <div className="section-head">
-            <p className="eyebrow">
-              What We Do
-            </p>
-            <h2 id="services-title" className="section-title" data-reveal="">
-              {services.length > 1 ? 'Renovation and building services' : 'Home renovation, done with care'}
+          <div className="journey__head">
+            <p className="eyebrow">From Idea to Handover</p>
+            <h2 id="journey-title" className="journey__title" data-reveal="">
+              {JOURNEY.title}
             </h2>
+            <p className="journey__intro">{JOURNEY.text}</p>
           </div>
-          <article className="feature">
-            <figure className="feature__figure" data-scroll="enter">
-              <Picture image={featuredImage} folder={`services/${featured.slug}`} sizes="(min-width: 1024px) 56vw, 100vw" decorative />
-            </figure>
-            <div className="feature__text" data-reveal="">
-              <p className="feature__n">01</p>
-              <h3 className="feature__title">{featured.title}</h3>
-              <p className="feature__summary">{SERVICE_SUMMARIES[featured.slug]}</p>
-              <a className="text-link" href="#contact">
-                Ask about your home <ArrowIcon />
-              </a>
-            </div>
-          </article>
-          {others.length > 0 && (
-            <ol className="service-list">
-              {others.map((s, i) => (
-                <li key={s.slug}>
-                  <Draft status={s.status}>
-                    <div className="service-list__row">
-                      <span className="service-list__n">{pad(i + 2)}</span>
-                      <h3 className="service-list__title">{s.title}</h3>
-                      <p className="service-list__text">{SERVICE_SUMMARIES[s.slug]}</p>
-                    </div>
-                  </Draft>
+          <div className="stages">
+            <span className="stages__line" data-scroll="cover" aria-hidden="true">
+              <span className="stages__progress" />
+            </span>
+            <ol className={`stages__list ${journeyImages.length || IS_PREVIEW ? 'stages__list--photos' : ''}`}>
+            {JOURNEY.stages.map((stage, i) => {
+              const image = journeyImages[i]
+              return (
+                <li key={stage.title} className={`stage ${i % 2 ? 'stage--right' : 'stage--left'}`} style={{ '--i': i } as CSSProperties}>
+                  <span className="stage__dot" aria-hidden="true" />
+                  <div className="stage__body" data-reveal="">
+                    {(image || IS_PREVIEW) && (
+                      <figure className="stage__figure">
+                        <Picture image={image} folder="home/journey" sizes="(min-width: 1024px) 34vw, 90vw" placeholder={`Placeholder · stage ${pad(i + 1)} photo for media/home/journey/`} />
+                      </figure>
+                    )}
+                    <p className="stage__n">{pad(i + 1)}</p>
+                    <h3 className="stage__title">{stage.title}</h3>
+                    <p className="stage__text">{stage.text}</p>
+                    {stage.note && (
+                      <Draft status="draft">
+                        <p className="stage__note">{stage.note}</p>
+                      </Draft>
+                    )}
+                  </div>
                 </li>
-              ))}
+              )
+            })}
             </ol>
-          )}
+          </div>
         </div>
       </section>
 
-      {/* ── Our projects (verified, published projects only) ── */}
-      {SHOW_PROJECTS && (
-        <section id="projects" className="section projects" data-theme="light" aria-labelledby="projects-title">
+      {/* ── Our expertise: two signature services ───────────── */}
+      <section id="expertise" className="expertise" aria-labelledby="expertise-title">
+        <div className="section expertise__construction" data-theme="light">
           <div className="container">
-            <div className="section-head section-head--row">
-              <div>
-                <p className="eyebrow">
-                  Our Projects
-                </p>
-                <h2 id="projects-title" className="section-title" data-reveal="">
-                  Selected work
-                </h2>
-              </div>
+            <div className="expertise__head">
+              <p className="eyebrow">Our Expertise</p>
+              <h2 id="expertise-title" className="section-title" data-reveal="">
+                {EXPERTISE.title}
+              </h2>
             </div>
-            {projects.length > 0 ? (
-              <ul className="portfolio">
-                {projects.slice(0, 4).map((p) => (
-                  <li key={p.slug} className="portfolio__item" data-reveal="">
-                    <figure data-scroll="cover">
-                      <Picture image={getImage(`projects/${p.slug}/cover`)} folder={`projects/${p.slug}/cover`} sizes="(min-width: 768px) 50vw, 100vw" />
-                    </figure>
-                    <p className="portfolio__meta">
-                      {p.category} <span aria-hidden="true">·</span> {p.district}
-                    </p>
-                    <h3 className="portfolio__title">{p.title}</h3>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="empty-state">
-                <p className="empty-state__title">Verified RANCO projects will appear here.</p>
-                <p>
-                  Add a folder under <code>media/projects/</code> with photographs and a completed <code>project.json</code>, then set{' '}
-                  <code>"published": true</code>. See MEDIA_GUIDE.md.
-                </p>
-                <p className="empty-state__note">Preview only: production hides this section until a project is published.</p>
+            <article className="signature signature--construction" aria-labelledby="service-construction">
+              <figure className="signature__figure" data-scroll="enter">
+                <Picture image={serviceImages[construction.slug][0]} folder={`services/${construction.slug}`} sizes="(min-width: 1024px) 58vw, 100vw" decorative />
+              </figure>
+              <div className="signature__text">
+                <p className="signature__n">01 · {construction.title}</p>
+                <h3 id="service-construction" className="signature__headline" data-reveal="">
+                  {EXPERTISE.services[construction.slug].headline}
+                </h3>
+                <p className="signature__body">{EXPERTISE.services[construction.slug].text}</p>
+                <a className="text-link" href="#contact">
+                  Plan your new home <ArrowIcon />
+                </a>
               </div>
-            )}
+            </article>
+          </div>
+        </div>
+        <div className="section expertise__heritage" data-theme="light" data-scroll="enter">
+          <div className="container">
+            <article className="signature signature--heritage" aria-labelledby="service-heritage">
+              <div className="signature__text">
+                <p className="signature__n">02 · {heritage.title}</p>
+                <h3 id="service-heritage" className="signature__headline" data-reveal="">
+                  {EXPERTISE.services[heritage.slug].headline}
+                </h3>
+                <p className="signature__body">{EXPERTISE.services[heritage.slug].text}</p>
+                <a className="text-link" href="#contact">
+                  Talk about your traditional home <ArrowIcon />
+                </a>
+              </div>
+              <figure className="signature__figure" data-scroll="enter">
+                <Picture image={serviceImages[heritage.slug][0]} folder={`services/${heritage.slug}`} sizes="(min-width: 1024px) 40vw, 100vw" decorative />
+              </figure>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Our work (verified, published projects only) ─────── */}
+      {SHOW_PROJECTS && (
+        <section id="work" className="section work" data-theme="light" aria-labelledby="work-title">
+          <div className="container">
+            <div className="section-head">
+              <p className="eyebrow">Our Work</p>
+              <h2 id="work-title" className="section-title" data-reveal="">
+                Homes we have built and renewed
+              </h2>
+            </div>
+            {SERVICES.map((service) => {
+              const items = projects.filter((p) => p.category === service.title)
+              if (!items.length && !IS_PREVIEW) return null
+              return (
+                <div key={service.slug} className="work__group">
+                  <h3 className="work__category">{service.title}</h3>
+                  {items.length > 0 ? (
+                    <ul className="portfolio">
+                      {items.slice(0, 4).map((p) => (
+                        <li key={p.slug} className="portfolio__item" data-reveal="">
+                          <figure data-scroll="cover">
+                            <Picture image={getImage(`projects/${p.slug}/cover`)} folder={`projects/${p.slug}/cover`} sizes="(min-width: 768px) 50vw, 100vw" />
+                          </figure>
+                          <p className="portfolio__meta">{p.district}</p>
+                          <h4 className="portfolio__title">{p.title}</h4>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="empty-state">
+                      <p className="empty-state__title">Verified {service.title} projects will appear here.</p>
+                      <p>
+                        Add a folder under <code>media/projects/</code> with photographs and a completed <code>project.json</code> (category{' '}
+                        <code>"{service.title}"</code>), then set <code>"published": true</code>. See MEDIA_GUIDE.md.
+                      </p>
+                      <p className="empty-state__note">Preview only: production shows this category once a project is published.</p>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </section>
       )}
 
       {/* ── Where we work ───────────────────────────────────── */}
       <section id="areas" className="section areas" data-theme="dark" data-scroll="enter" aria-labelledby="areas-title">
-        <div className="container areas__grid">
+        <div className="container">
           <div className="areas__head">
-            <p className="eyebrow">
-              Where We Work
-            </p>
+            <p className="eyebrow">Where We Work</p>
             <h2 id="areas-title" className="section-title" data-reveal="">
-              Four districts of central Kerala
+              {AREAS_TITLE}
             </h2>
-            <p className="areas__intro">
-              {AREAS_INTRO}
-            </p>
+            <p className="areas__intro">{AREAS_INTRO}</p>
           </div>
           <ul className="districts" data-scroll="enter">
             {AREAS.map((a, i) => (
@@ -213,21 +261,17 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ── Contact ─────────────────────────────────────────── */}
+      {/* ── Contact / start your project ────────────────────── */}
       <section id="contact" className="contact" data-theme="dark" aria-labelledby="contact-title">
         <div className="contact__banner" data-scroll="enter">
           <Picture image={closingImage} folder="home/closing" sizes="100vw" cover decorative />
           <div className="contact__shade" aria-hidden="true" />
           <div className="container contact__head">
-            <p className="eyebrow eyebrow--light">
-              Contact
-            </p>
+            <p className="eyebrow eyebrow--light">Start Your Project</p>
             <h2 id="contact-title" className="contact__title" data-reveal="">
               {CONTACT_COPY.heading}
             </h2>
-            <p className="contact__lede">
-              {CONTACT_COPY.text}
-            </p>
+            <p className="contact__lede">{CONTACT_COPY.text}</p>
           </div>
         </div>
         <div className="container contact__grid">
@@ -243,7 +287,7 @@ export function HomePage() {
               <span className="contact-card__label">Call</span>
               <span className="contact-card__value">{SITE.phone.display}</span>
             </a>
-            <p className="contact__areas">Serving {SITE.districts.join(', ')}</p>
+            <p className="contact__areas">Serving homeowners in {SITE.districts.join(', ')}</p>
           </div>
           <div className="contact__form">
             <h3>Prefer to write?</h3>

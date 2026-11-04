@@ -1,11 +1,7 @@
 {
   "districts": ["Kottayam", "Pathanamthitta", "Idukki", "Ernakulam"],
   "services": [
-    { "slug": "home-construction", "title": "Home Construction", "status": "draft" },
-    { "slug": "home-renovation", "title": "Home Renovation", "status": "confirmed" },
-    { "slug": "house-extensions", "title": "House Extensions", "status": "draft" },
-    { "slug": "roofing-waterproofing", "title": "Roofing & Waterproofing", "status": "draft" },
-    { "slug": "kitchen-bathroom-renovation", "title": "Kitchen & Bathroom Renovation", "status": "draft" },
-    { "slug": "repair-maintenance", "title": "Repair & Maintenance", "status": "draft" }
+    { "slug": "new-home-construction", "title": "New Home Construction", "status": "confirmed" },
+    { "slug": "heritage-home-renovation", "title": "Heritage Home Renovation", "status": "confirmed" }
   ]
 }

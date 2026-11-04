@@ -53,14 +53,22 @@ Deliberately light, with no animation library (GSAP was removed in Version 4),
 no pinning and native scrolling throughout.
 
 - **Hero entrance:** a short CSS animation (about one second).
-- **Section transitions (Version 4.1):** elements marked `data-scroll` expose
-  their scroll progress to CSS as `--p` (arriving) or `--q` (the hero leaving),
-  and CSS draws the transitions with transforms, opacity and a few clip-paths:
-  hero eases forward and dims → About opens as a widening panel and its
-  photograph is unmasked upward → the service photograph is drawn open from the
-  left → (published projects only: staggered covers with gentle parallax) → the
-  charcoal Where We Work panel grows to full width while the districts rise in
-  sequence → the contact photograph opens out. Contact actions are never animated.
+- **Section transitions (Version 4.1, extended in 4.2):** elements marked
+  `data-scroll` expose their scroll progress to CSS as `--p` (arriving) or
+  `--q` (the hero leaving), and CSS draws the transitions with transforms,
+  opacity and a few clip-paths: hero eases forward and dims → About opens as a
+  widening panel, its photograph unmasked upward → the journey's gold line
+  fills as the six stages are read → the New Home Construction photograph is
+  drawn open from the left → the Heritage panel warms to a timber tone while its
+  photograph is unmasked from the right → (published projects only: staggered
+  covers with parallax) → the charcoal Where We Work panel widens and the
+  district names rise → the contact photograph opens out. Contact actions are
+  never animated.
+- **Progress is not inherited by default** (`@property … inherits: false`):
+  only the few elements that draw with it take it from their parent, so a
+  changing value never restyles a whole section on every frame. (Inheriting it
+  through the long journey section raised slow frames on a throttled phone from
+  0.2% to 2.9%; limiting inheritance brought it back to 0.1%.)
 - **How progress is produced:** browsers with native scroll-driven animations
   (`animation-timeline: view()`) animate the registered `--p`/`--q` properties
   in CSS alone. Others use `useScrollProgress`: one passive scroll listener,

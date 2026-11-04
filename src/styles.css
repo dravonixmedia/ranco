@@ -17,6 +17,8 @@
   --on-dark-muted:rgba(244,239,230,.72);
   --gold:#d9c7a5;            /* RANCO gold, on dark backgrounds */
   --gold-deep:#7a5f32;       /* gold for text on light backgrounds (AA contrast) */
+  --timber:#6e4a2c;          /* heritage accent, text on light backgrounds */
+  --timber-light:#ece1cf;    /* heritage panel */
   --serif:"Cormorant Garamond","Cormorant",Georgia,"Times New Roman",serif;
   --sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --gutter:clamp(20px,5vw,72px);
@@ -139,29 +141,30 @@ main:focus{outline:none}
 /* Hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:560px;color:var(--on-dark);background:var(--ink);overflow:hidden;isolation:isolate}
 .hero__media{position:absolute;inset:0;z-index:-2}
-.hero__shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(9,12,11,.84) 0%,rgba(9,12,11,.38) 46%,rgba(9,12,11,.08) 72%),linear-gradient(180deg,rgba(9,12,11,.5) 0%,rgba(9,12,11,0) 22%)}
+.hero__shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(9,12,11,.86) 0%,rgba(9,12,11,.42) 48%,rgba(9,12,11,.1) 74%),linear-gradient(180deg,rgba(9,12,11,.5) 0%,rgba(9,12,11,0) 22%)}
 .hero__inner{position:absolute;left:0;right:0;bottom:clamp(64px,13vh,140px)}
-.hero__title{font-family:var(--serif);font-weight:500;font-size:clamp(48px,7.4vw,128px);line-height:.98;letter-spacing:-.02em}
+.hero__title{font-family:var(--serif);font-weight:500;font-size:clamp(40px,6.4vw,116px);line-height:1;letter-spacing:-.02em;max-width:12em}
 .hero__line{display:block}
-.hero__line--accent{font-style:italic;color:var(--gold);padding-left:.8em}
-.hero__lede{margin-top:clamp(18px,2.4vw,28px);max-width:30em;font-size:clamp(16px,1.25vw,19px);color:var(--on-dark-muted)}
-.hero__actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:clamp(24px,3vw,40px)}
-.hero__actions .text-link svg{width:16px;height:16px}
-.hero__statement{position:absolute;left:0;right:0;bottom:clamp(20px,4vh,36px);text-align:right;font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.3vw,21px);color:var(--gold)}
+.hero__line+.hero__line{padding-left:.7em}
+.hero__accent{font-style:italic;color:var(--gold)}
+.hero__lede{margin-top:clamp(18px,2.4vw,28px);max-width:34em;font-size:clamp(16px,1.3vw,20px);color:var(--on-dark-muted)}
+.hero__actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:clamp(24px,3vw,40px)}
+.hero__statement{position:absolute;left:0;right:0;bottom:clamp(20px,4vh,36px);text-align:right;font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
 @media (max-width:599px){
-  .hero__title{font-size:clamp(44px,13vw,60px)}
-  .hero__line--accent{padding-left:.5em}
+  .hero__title{font-size:clamp(30px,9.6vw,50px)}
+  .hero__line+.hero__line{padding-left:0}
   .hero__actions .btn{flex:1 1 100%}
-  .hero__statement{text-align:left}
-  .hero__inner{bottom:clamp(64px,10vh,96px)}
+  .hero__statement{display:none}
+  .hero__inner{bottom:clamp(60px,9vh,88px)}
 }
 
 /* About */
 .about{background:var(--ivory)}
 .about__grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(16px,2vw,32px);align-items:center}
 .about__text{grid-column:1/7}
-.about__statement{font-family:var(--serif);font-weight:500;font-size:clamp(38px,4.4vw,74px);line-height:1.04;letter-spacing:-.015em;text-wrap:balance}
-.about__copy{display:grid;gap:18px;margin-top:clamp(28px,3vw,44px);max-width:32em;font-size:var(--fs-body-lg,18px);color:var(--muted)}
+.about__statement{font-family:var(--serif);font-weight:500;font-size:clamp(36px,4.2vw,70px);line-height:1.05;letter-spacing:-.015em;text-wrap:balance}
+.about__lead{margin-top:clamp(24px,2.6vw,36px);max-width:32em;font-family:var(--serif);font-size:clamp(21px,1.7vw,27px);line-height:1.45;color:var(--text)}
+.about__copy{display:grid;gap:16px;margin-top:clamp(20px,2.4vw,32px);max-width:34em;color:var(--muted)}
 .about__figure{grid-column:8/13;margin:0 var(--bleed) 0 0;overflow:hidden}
 .about__figure .picture{aspect-ratio:4/5}
 @media (max-width:1023px){
@@ -170,31 +173,77 @@ main:focus{outline:none}
   .about__figure .picture{aspect-ratio:4/3}
 }
 
-/* What we do */
-.services{background:var(--stone)}
-.feature{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(16px,2vw,32px);align-items:end}
-.feature__figure{grid-column:1/8;margin:0 0 0 var(--bleed);overflow:hidden}
-.feature__figure .picture{aspect-ratio:3/2}
-.feature__text{grid-column:9/13;display:grid;gap:14px;justify-items:start;padding-bottom:6px}
-.feature__n{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--gold-deep)}
-.feature__title{font-family:var(--serif);font-weight:500;font-size:clamp(34px,3.4vw,56px);line-height:1.05}
-.feature__summary{color:var(--muted);max-width:26em}
-.feature__text .text-link{margin-top:10px}
-.service-list{margin-top:clamp(48px,6vw,88px);border-top:1px solid var(--line)}
-.service-list>li{border-bottom:1px solid var(--line)}
-.service-list__row{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,24em);gap:20px;align-items:baseline;padding:22px 0}
-.service-list__n{font-family:var(--serif);font-style:italic;color:var(--gold-deep)}
-.service-list__title{font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.2vw,34px);line-height:1.15}
-.service-list__text{color:var(--muted);font-size:15px}
-@media (max-width:1023px){
-  .feature__figure,.feature__text{grid-column:1/-1}
-  .feature__figure{margin:0 calc(-1 * var(--gutter))}
-  .feature__text{margin-top:28px}
+/* From idea to handover */
+.journey{background:var(--ink);color:var(--on-dark)}
+.journey__head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:12px clamp(32px,5vw,88px);align-items:end;margin-bottom:clamp(56px,7vw,112px)}
+.journey__head .eyebrow{grid-column:1/-1;margin-bottom:0}
+.journey__title{font-family:var(--serif);font-weight:500;font-size:clamp(38px,4.6vw,78px);line-height:1.03;letter-spacing:-.015em;text-wrap:balance}
+.journey__intro{color:var(--on-dark-muted);max-width:28em;font-size:clamp(16px,1.2vw,19px)}
+.stages{position:relative}
+.stages__line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line-light)}
+.stages__progress{position:absolute;inset:0;background:var(--gold);transform-origin:top}
+.stages__list{display:flex;flex-direction:column}
+.stage{position:relative;width:50%}
+.stage--left{padding-right:clamp(40px,5vw,88px)}
+.stage--right{margin-left:50%;padding-left:clamp(40px,5vw,88px)}
+.stage+.stage{margin-top:clamp(8px,1.4vw,24px)}
+/* With photographs the stages interleave, each right-hand stage sitting between two left-hand ones. */
+.stages__list--photos .stage+.stage{margin-top:calc(-1 * clamp(40px,6vw,120px))}
+.stage__dot{position:absolute;top:14px;width:11px;height:11px;border-radius:50%;background:var(--ink);border:1px solid var(--gold)}
+.stage--left .stage__dot{right:-5.5px}
+.stage--right .stage__dot{left:-5.5px}
+.stage__body{display:grid;gap:10px;max-width:30em}
+.stage--left .stage__body{margin-left:auto}
+.stage__figure{margin:0 0 14px;overflow:hidden}
+.stage__figure .picture{aspect-ratio:4/3}
+[data-theme="dark"] .picture--empty{border:1px solid var(--line-light)}
+.stage__n{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--gold);line-height:1}
+.stage__title{font-family:var(--serif);font-weight:500;font-size:clamp(28px,2.6vw,42px);line-height:1.08}
+.stage__text{color:var(--on-dark-muted)}
+.stage__note{font-size:14px;color:var(--on-dark-muted)}
+@media (max-width:899px){
+  .journey__head{grid-template-columns:1fr}
+  .stages__line{left:5px}
+  .stage,.stage--right{width:100%;margin-left:0;padding:0 0 0 40px}
+  .stage+.stage,.stages__list--photos .stage+.stage{margin-top:clamp(40px,8vw,56px)}
+  .stage--left .stage__dot,.stage--right .stage__dot{left:0;right:auto}
+  .stage--left .stage__body{margin-left:0}
 }
-@media (max-width:599px){.service-list__row{grid-template-columns:40px minmax(0,1fr)}.service-list__text{grid-column:2}}
 
-/* Projects */
-.projects{background:var(--ivory)}
+/* Our expertise: two signature services */
+.expertise__construction{background:var(--ivory);padding-bottom:clamp(64px,8vw,128px)}
+.expertise__head{margin-bottom:clamp(40px,5vw,72px)}
+.expertise__heritage{position:relative;isolation:isolate;background:var(--ivory)}
+.expertise__heritage::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--timber-light)}
+.signature{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(16px,2vw,32px);align-items:end}
+.signature__figure{margin:0;overflow:hidden}
+.signature__text{display:grid;gap:16px;justify-items:start}
+.signature__n{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep)}
+.signature__headline{font-family:var(--serif);font-weight:500;font-size:clamp(34px,3.6vw,60px);line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+.signature__body{color:var(--muted);max-width:30em}
+.signature__text .text-link{margin-top:8px}
+.signature--construction .signature__figure{grid-column:1/8;margin-left:var(--bleed)}
+.signature--construction .signature__figure .picture{aspect-ratio:3/2}
+.signature--construction .signature__text{grid-column:9/13;padding-bottom:6px}
+.signature--heritage{align-items:center}
+.signature--heritage .signature__text{grid-column:1/6;grid-row:1}
+.signature--heritage .signature__figure{grid-column:7/13;grid-row:1;margin-right:var(--bleed)}
+.signature--heritage .signature__figure .picture{aspect-ratio:4/5}
+.signature--heritage .signature__n{color:var(--timber)}
+.signature--heritage .signature__headline{font-style:italic}
+.signature--heritage .signature__text::before{content:"";width:56px;height:2px;background:var(--timber);margin-bottom:6px}
+@media (max-width:1023px){
+  .signature .signature__figure,.signature .signature__text{grid-column:1/-1;grid-row:auto}
+  .signature--construction .signature__figure{margin:0 calc(-1 * var(--gutter))}
+  .signature--heritage .signature__figure{margin:clamp(32px,5vw,48px) calc(-1 * var(--gutter)) 0}
+  .signature--heritage .signature__figure .picture{aspect-ratio:4/3}
+  .signature--construction .signature__text{margin-top:28px}
+}
+
+/* Our work */
+.work{background:var(--paper)}
+.work__group+.work__group{margin-top:clamp(56px,7vw,104px)}
+.work__category{font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep);padding-bottom:16px;margin-bottom:clamp(24px,3vw,40px);border-bottom:1px solid var(--line)}
 .portfolio{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(40px,5vw,72px) clamp(16px,2vw,32px)}
 .portfolio__item{grid-column:span 6}
 .portfolio__item:nth-child(4n+1){grid-column:1/8}
@@ -203,20 +252,22 @@ main:focus{outline:none}
 .portfolio__meta{margin-top:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep)}
 .portfolio__title{font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.1vw,32px);margin-top:4px}
 @media (max-width:767px){.portfolio__item,.portfolio__item:nth-child(n){grid-column:1/-1;margin-top:0}}
-.empty-state{border:1px solid var(--line);padding:clamp(28px,4vw,48px);max-width:720px;background:var(--paper);display:grid;gap:10px;color:var(--muted)}
+.empty-state{border:1px solid var(--line);padding:clamp(24px,3.4vw,40px);max-width:720px;background:var(--ivory);display:grid;gap:10px;color:var(--muted)}
 .empty-state__title{font-family:var(--serif);font-size:clamp(22px,2vw,28px);color:var(--text)}
 .empty-state__note{font-size:13px}
 
 /* Where we work */
 .areas{background:var(--charcoal);color:var(--on-dark)}
-.areas__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,7vw,120px);align-items:start}
-.areas__intro{margin-top:22px;max-width:26em;color:var(--on-dark-muted)}
-.districts{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(24px,3vw,48px)}
-.district{border-top:1px solid var(--line-light);padding:26px 0 34px}
-.district__name{font-family:var(--serif);font-weight:500;font-size:clamp(32px,3.4vw,56px);line-height:1.05}
-.district__text{margin-top:10px;font-size:15px;color:var(--on-dark-muted);max-width:24em}
-@media (max-width:899px){.areas__grid{grid-template-columns:1fr}}
-@media (max-width:599px){.districts{grid-template-columns:1fr}.district{padding:22px 0 26px}}
+.areas__head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:12px clamp(32px,5vw,88px);align-items:end;margin-bottom:clamp(40px,5vw,72px)}
+.areas__head .eyebrow{grid-column:1/-1;margin-bottom:0}
+.areas__intro{color:var(--on-dark-muted);max-width:28em}
+.districts{border-top:1px solid var(--line-light)}
+.district{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:12px clamp(32px,5vw,88px);align-items:baseline;padding:clamp(18px,2.2vw,30px) 0;border-bottom:1px solid var(--line-light)}
+.district__name{font-family:var(--serif);font-weight:500;font-size:clamp(44px,6.6vw,116px);line-height:1;letter-spacing:-.02em}
+.district__name::after{content:".";color:var(--gold)}
+.district__text{font-size:15px;color:var(--on-dark-muted);max-width:26em}
+@media (max-width:899px){.areas__head,.district{grid-template-columns:1fr}}
+@media (max-width:599px){.district__name{font-size:clamp(36px,11vw,52px)}}
 
 /* FAQ */
 .faq{background:var(--ivory)}
@@ -263,7 +314,6 @@ main:focus{outline:none}
 .motion .hero__media img{animation:settle 1.8s var(--ease) both}
 .motion .hero__line,.motion .hero__lede,.motion .hero__actions,.motion .hero__statement{animation:rise .9s var(--ease) both}
 .motion .hero__line:nth-child(2){animation-delay:.08s}
-.motion .hero__line:nth-child(3){animation-delay:.16s}
 .motion .hero__lede{animation-delay:.3s}
 .motion .hero__actions{animation-delay:.4s}
 .motion .hero__statement{animation-delay:.5s}
@@ -278,8 +328,13 @@ main:focus{outline:none}
  * --p goes 0 → 1 as an element arrives, --q 0 → 1 as the hero leaves.
  * Defaults are the finished state, so without motion nothing changes.
  */
-@property --p{syntax:"<number>";inherits:true;initial-value:1}
-@property --q{syntax:"<number>";inherits:true;initial-value:0}
+@property --p{syntax:"<number>";inherits:false;initial-value:1}
+@property --q{syntax:"<number>";inherits:false;initial-value:0}
+/* Progress is not inherited by default: only the elements that draw with it take it from their parent,
+   so a changing value never restyles a whole section's contents on every frame. */
+.motion :is(.hero__media,.hero__inner,.hero__statement,.about__figure .picture,.about__figure img,.stages__progress,
+  .signature__figure .picture,.signature__figure img,.portfolio [data-scroll] .picture,.portfolio [data-scroll] img,.district,.contact__banner>.picture),
+.motion .hero::after,.motion .expertise__heritage::before{--p:inherit;--q:inherit}
 @keyframes scroll-p{from{--p:0}to{--p:1}}
 @keyframes scroll-q{from{--q:0}to{--q:1}}
 @supports (animation-timeline:view()){
@@ -297,18 +352,25 @@ main:focus{outline:none}
 .motion .about__figure .picture{clip-path:inset(calc((1 - var(--p,1)) * 100%) 0 0 0)}
 .motion .about__figure img{transform:scale(calc(1 + (1 - var(--p,1)) * .14))}
 
-/* 2. About → Services: the service photograph is drawn open from the left. */
-.motion .feature__figure .picture{clip-path:inset(0 calc((1 - var(--p,1)) * 100%) 0 0)}
-.motion .feature__figure img{transform:translateX(calc((1 - var(--p,1)) * -6%)) scale(calc(1.08 - var(--p,1) * .08))}
+/* 2. About → Journey: the timeline fills with gold as the stages are read. */
+.motion .stages__progress{transform:scaleY(var(--p,1))}
 
-/* 3. Projects (only when published): gentle parallax inside each cover. */
+/* 3. Journey → Services: the construction photograph is drawn open from the left;
+   the heritage panel then warms in, its timber tone widening behind a photograph unmasked from the right. */
+.motion .signature--construction .signature__figure .picture{clip-path:inset(0 calc((1 - var(--p,1)) * 100%) 0 0)}
+.motion .signature--construction .signature__figure img{transform:translateX(calc((1 - var(--p,1)) * -6%)) scale(calc(1.08 - var(--p,1) * .08))}
+.motion .expertise__heritage::before{clip-path:inset(calc((1 - var(--p,1)) * 10vh) calc((1 - var(--p,1)) * 6vw) 0)}
+.motion .signature--heritage .signature__figure .picture{clip-path:inset(0 0 0 calc((1 - var(--p,1)) * 100%))}
+.motion .signature--heritage .signature__figure img{transform:translateX(calc((1 - var(--p,1)) * 6%)) scale(calc(1.08 - var(--p,1) * .08))}
+
+/* 4. Our Work (only when published): gentle parallax inside each cover. */
 .motion .portfolio [data-scroll="cover"] img{transform:translateY(calc((.5 - var(--p,.5)) * 10%)) scale(1.12)}
 
-/* 4. Into Where We Work: the charcoal panel grows to full width; districts rise in sequence. */
+/* 5. Into Where We Work: the charcoal panel grows to full width; the district names rise in sequence. */
 .motion .areas{clip-path:inset(calc((1 - var(--p,1)) * 8vh) calc((1 - var(--p,1)) * 6vw) 0)}
 .motion .district{transform:translateY(calc((1 - var(--p,1)) * (36px + var(--i,0) * 26px)));opacity:calc(.1 + var(--p,1) * .9)}
 
-/* 5. Contact: the closing photograph opens out and settles. Actions below are never animated. */
+/* 6. Contact: the closing photograph opens out and settles. Actions below are never animated. */
 .motion .contact__banner{clip-path:inset(0 calc((1 - var(--p,1)) * 8vw))}
 .motion .contact__banner>.picture{transform:scale(calc(1 + (1 - var(--p,1)) * .12))}
 

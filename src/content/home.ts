@@ -1,39 +1,71 @@
 import type { Status } from './site'
 
-/** Homepage copy. Every item carries a status; drafts appear only in the preview build. */
-
-/** Short description of each service for the homepage list. Visibility follows the service status in taxonomy.json. */
-export const SERVICE_SUMMARIES: Record<string, string> = {
-  'home-construction': 'New houses planned around your plot, your family and Kerala’s climate.',
-  'home-renovation': 'Renewing older homes and apartments: layouts, finishes and services, while keeping what makes them yours.',
-  'house-extensions': 'Extra rooms, upper floors and verandahs that sit naturally with the existing house.',
-  'roofing-waterproofing': 'Tiled and concrete roofs, leak repairs and waterproofing for heavy monsoon seasons.',
-  'kitchen-bathroom-renovation': 'Kitchens and bathrooms with better layouts, ventilation, plumbing and finishes.',
-  'repair-maintenance': 'Repairs, repainting and upkeep that keep a home sound between larger projects.',
-}
+/**
+ * Homepage copy. Wording supplied in the Version 4.2 brief is published;
+ * anything that would claim a specific responsibility, credential or result
+ * not yet confirmed carries status "draft" and appears only in the preview.
+ */
 
 export const ABOUT = {
-  statement: 'Homes shaped around the families who live in them.',
-  paragraphs: [
-    {
-      status: 'confirmed' as Status,
-      text: 'RANCO works with homeowners in Kottayam, Pathanamthitta, Idukki and Ernakulam to renovate and improve the homes they love.',
-    },
-    {
-      status: 'draft' as Status,
-      text: 'Every project begins with a conversation about how your family lives, what the house needs and what you would like it to become. From there, the work is planned carefully and you are kept informed at every stage.',
-    },
+  title: 'Built Around Your Vision. Rooted in Kerala.',
+  text: 'At RANCO, every home begins with understanding the people who will live in it. From shaping new spaces to renewing traditional homes, our approach brings together thoughtful planning, careful execution and an appreciation for Kerala’s architectural identity.',
+  message: [
+    'Every home begins with an idea. RANCO helps transform that idea into a thoughtfully planned and beautifully completed home, bringing together the different stages of the home-building journey.',
+    'For traditional Kerala homes, RANCO focuses on renewing existing spaces while respecting their architectural heritage and original character.',
   ],
 }
 
-export const AREAS_INTRO = 'RANCO serves homeowners across four districts of central Kerala. If your home is nearby, call or message to ask.'
+export interface Stage {
+  title: string
+  text: string
+  /** Preview-only note for stages whose division of responsibility is not yet confirmed. */
+  note?: string
+}
+
+export const JOURNEY = {
+  title: 'Every Dream Home Has a Beginning.',
+  text: 'From the first conversation to the finishing touches, discover the journey of bringing your dream home to life.',
+  stages: [
+    { title: 'Your Idea', text: 'Understanding your vision, requirements, lifestyle and expectations.' },
+    {
+      title: 'Planning & Design',
+      text: 'Turning the initial concept into architectural planning and design.',
+      note: 'To confirm: does RANCO provide architectural design directly, or coordinate it through qualified professionals?',
+    },
+    {
+      title: 'Drawings & Approvals',
+      text: 'Preparing the required drawings and coordinating applicable approval processes.',
+      note: 'To confirm: who prepares the drawings and handles approvals, RANCO or qualified professionals RANCO works with?',
+    },
+    { title: 'Construction', text: 'Bringing the approved plans to life through the construction process.' },
+    { title: 'Finishing', text: 'Completing the details that shape the look and feel of the home.' },
+    { title: 'Final Handover', text: 'The completed home, ready for its next chapter.' },
+  ] as Stage[],
+}
+
+export const EXPERTISE = {
+  title: 'Two Signature Services',
+  services: {
+    'new-home-construction': {
+      headline: 'A Home Designed Around Your Dreams.',
+      text: 'From your first idea to the final details, RANCO helps shape a home that reflects your vision, lifestyle and aspirations.',
+    },
+    'heritage-home-renovation': {
+      headline: 'Preserving the Past. Renewing for the Future.',
+      text: 'Traditional Kerala homes hold stories, memories and craftsmanship worth preserving. RANCO brings a thoughtful approach to heritage home renovation, respecting original architectural character while adapting spaces for contemporary living.',
+    },
+  } as Record<string, { headline: string; text: string }>,
+}
+
+export const AREAS_TITLE = 'Building Homes Across Central Kerala.'
+export const AREAS_INTRO = 'RANCO works with homeowners in four districts of Central Kerala. These are the areas we serve, not branch offices. If your home or plot is nearby, call or message to ask.'
 
 /** General observations about each district's homes, not claims about RANCO's project history. */
 export const AREAS = [
-  { district: 'Kottayam', text: 'Independent family homes, older houses ready for renewal and additions for growing families.' },
-  { district: 'Pathanamthitta', text: 'Homes across the district’s towns and villages, from focused upgrades to larger renovations.' },
+  { district: 'Kottayam', text: 'Family homes on their own plots, and older houses with character worth keeping.' },
+  { district: 'Pathanamthitta', text: 'Homes across the district’s towns and villages, from new houses to traditional homes ready for renewal.' },
   { district: 'Idukki', text: 'Sloping plots, heavy rainfall and hill-country access shape how homes here are planned, drained and roofed.' },
-  { district: 'Ernakulam', text: 'Space-efficient renovation for city homes and apartments, where every square foot matters.' },
+  { district: 'Ernakulam', text: 'Homes in and around the city, where careful planning makes the most of every plot.' },
 ]
 
 export interface Faq {
@@ -42,46 +74,41 @@ export interface Faq {
   answer: string
 }
 
-/** General guidance and verified facts only: no prices, timelines or guarantees. */
+/** General guidance and verified facts only: no prices, timelines, responsibilities or guarantees. */
 export const FAQS: Faq[] = [
   {
     status: 'confirmed',
+    question: 'How do I begin a new home construction enquiry?',
+    answer: 'Call +91 98466 67095 or send a WhatsApp message with your district, where your plot is, and a few words about the home you have in mind. You can also use the form on this page, which prepares the message for you.',
+  },
+  {
+    status: 'confirmed',
+    question: 'What stages are involved in building a home?',
+    answer: 'A new home usually moves from your initial idea to planning and design, the drawings and approvals the project needs, construction, finishing, and finally handover. The details of each stage depend on the plot, the design and the approvals that apply.',
+  },
+  {
+    status: 'confirmed',
+    question: 'What does heritage home renovation mean?',
+    answer: 'It means renewing a traditional Kerala home, such as a house with a tiled roof, timber pillars, verandahs or a courtyard, while respecting its original architectural character, so that it suits contemporary living without losing what makes it special.',
+  },
+  {
+    status: 'confirmed',
+    question: 'Which areas of Central Kerala does RANCO serve?',
+    answer: 'RANCO serves homeowners in Kottayam, Pathanamthitta, Idukki and Ernakulam districts. These are service areas, not branch offices. If your home is nearby, call or message to ask.',
+  },
+  {
+    status: 'confirmed',
+    question: 'How do I contact RANCO for an initial discussion?',
+    answer: 'Call +91 98466 67095, message on WhatsApp, or fill in the short form on this page. Tell us whether you are planning a new home or renewing a traditional house, and where it is.',
+  },
+  {
+    status: 'confirmed',
     question: 'Can an old Kerala house be renovated?',
-    answer: 'Often, yes. The first step is to check the condition of the walls, foundations, roof timber or slab, wiring and plumbing. Sound older houses can usually be renewed and modernised while keeping their character; where parts are weak, they may need repair or replacement first.',
-  },
-  {
-    status: 'confirmed',
-    question: 'What affects the cost of a home renovation?',
-    answer: 'The main factors are the scope of work, the condition of the existing structure, the materials and finishes you choose, access to the site and whether services such as wiring, plumbing or the roof need replacing. An estimate is only reliable once the house has been seen.',
-  },
-  {
-    status: 'confirmed',
-    question: 'What should be checked before renovating a roof?',
-    answer: 'Look at the condition of the rafters or slab, signs of leaks and damp on ceilings and walls, the state of the tiles or sheets, gutters and drainage, and how the roof copes with heavy rain. These decide whether repair, waterproofing or replacement makes sense.',
-  },
-  {
-    status: 'confirmed',
-    question: 'What information helps with an estimate?',
-    answer: 'Your location, a short description of the work, photographs of the areas involved, any existing drawings or measurements, and when you would like the work to happen.',
-  },
-  {
-    status: 'confirmed',
-    question: 'How do I start a project with RANCO?',
-    answer: 'Call +91 98466 67095 or send a WhatsApp message with your district, the work you have in mind and a few photographs of the house.',
-  },
-  {
-    status: 'confirmed',
-    question: 'Which areas does RANCO serve?',
-    answer: 'RANCO serves homeowners in Kottayam, Pathanamthitta, Idukki and Ernakulam districts. If your home is nearby, call or message to ask.',
-  },
-  {
-    status: 'draft',
-    question: 'How do I request a site visit?',
-    answer: 'Call or message us with your location and a short description of the work. We will arrange a convenient time to visit the house or plot.',
+    answer: 'Often, yes. The first step is to check the condition of the walls, foundations, roof timber or slab, wiring and plumbing. Sound older houses can usually be renewed while keeping their character; where parts are weak, they may need repair or replacement first.',
   },
 ]
 
 export const CONTACT_COPY = {
-  heading: 'Let’s Build Together',
-  text: 'Tell us about your home and what you would like to change. Call us, or send the details on WhatsApp.',
+  heading: 'Your Dream Home Starts With a Conversation.',
+  text: 'Whether you’re planning a new home or renewing a traditional Kerala house, tell us what you have in mind.',
 }

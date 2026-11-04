@@ -25,7 +25,7 @@ export function validate(f: Fields): Errors {
   if (f.name.trim().length < 2) errors.name = 'Please enter your name.'
   if (!normalisePhone(f.phone)) errors.phone = 'Please enter a 10-digit mobile number.'
   if (!f.district) errors.district = 'Please choose a district.'
-  if (!f.service) errors.service = 'Please choose the type of work.'
+  if (!f.service) errors.service = 'Please choose a project type.'
   if (f.details.trim().length < 10) errors.details = 'Please describe the work in a sentence or two.'
   return errors
 }
@@ -36,7 +36,7 @@ export function composeMessage(f: Fields): string {
     `Name: ${f.name.trim()}`,
     `Phone: ${normalisePhone(f.phone)}`,
     `District: ${f.district}`,
-    `Work: ${f.service}`,
+    `Project type: ${f.service}`,
     `Details: ${f.details.trim()}`,
   ].join('\n')
 }
@@ -109,13 +109,13 @@ export function EnquiryForm() {
           {error('district')}
         </div>
         <div className="field">
-          <label htmlFor={`${id}-service`}>Type of work</label>
+          <label htmlFor={`${id}-service`}>Project type</label>
           <select {...field('service')} required>
             <option value="">Choose…</option>
             {services.map((s) => (
               <option key={s}>{s}</option>
             ))}
-            <option>Something else</option>
+            <option>General Enquiry</option>
           </select>
           {error('service')}
         </div>

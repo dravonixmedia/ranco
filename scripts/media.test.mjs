@@ -28,7 +28,7 @@ async function json(dir, rel, data) {
   await writeFile(file, typeof data === 'string' ? data : JSON.stringify(data))
 }
 
-const validProject = { title: 'Old house renovation', district: 'Kottayam', category: 'Home Renovation', description: 'Renovation of an existing family home, with verified details supplied by the client.', published: true }
+const validProject = { title: 'Old house renovation', district: 'Kottayam', category: 'Heritage Home Renovation', description: 'Renovation of an existing family home, with verified details supplied by the client.', published: true }
 
 test('natural ordering puts 2 before 10 and ignores case', () => {
   assert.deepEqual(['10-a.jpg', '2-b.jpg', '1-c.jpg', 'B.jpg', 'a.jpg'].sort(naturalCompare), ['1-c.jpg', '2-b.jpg', '10-a.jpg', 'a.jpg', 'B.jpg'])
@@ -167,7 +167,7 @@ test('projects stay unpublished unless explicitly published and valid', async ()
 test('project validation rejects unknown districts, categories and slug mismatches', async () => {
   const dir = await mediaDir()
   await image(dir, 'projects/bad-one/cover/01.jpg')
-  await json(dir, 'projects/bad-one/project.json', { ...validProject, slug: 'other', district: 'Thrissur', category: 'Luxury Villas' })
+  await json(dir, 'projects/bad-one/project.json', { ...validProject, slug: 'other', district: 'Thrissur', category: 'Commercial Buildings' })
   const { manifest } = await buildManifest({ mediaDir: dir })
   const [p] = manifest.projects
   assert.equal(p.published, false)

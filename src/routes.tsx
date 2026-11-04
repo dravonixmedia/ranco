@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
-import { SITE } from './content/site'
+import { FAQS } from './content/home'
+import { SERVICES, SITE } from './content/site'
 import { getImage, type MediaImage } from './media'
 import { HomePage } from './pages/HomePage'
 import { NotFoundPage } from './pages/NotFoundPage'
@@ -28,8 +29,24 @@ const business = {
   url: `${SITE.url}/`,
   telephone: '+91-98466-67095',
   slogan: `${SITE.tagline} | ${SITE.region}`,
-  description: 'Home renovation for homeowners in Kottayam, Pathanamthitta, Idukki and Ernakulam, Kerala.',
+  description: 'New home construction and heritage home renovation for homeowners in Central Kerala: Kottayam, Pathanamthitta, Idukki and Ernakulam.',
   areaServed: SITE.districts.map((d) => ({ '@type': 'AdministrativeArea', name: `${d} district, Kerala, India` })),
+  // The two services offered; no prices, ratings or credentials are claimed.
+  makesOffer: SERVICES.filter((s) => s.status === 'confirmed').map((s) => ({
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: s.title, areaServed: 'Central Kerala, India' },
+  })),
+}
+
+/** Questions and answers exactly as they appear on the page (confirmed items only). */
+const faqPage = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.filter((f) => f.status === 'confirmed').map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
 }
 
 const website = {
@@ -47,12 +64,12 @@ export const ROUTES: PageRoute[] = [
     path: '/',
     file: 'index.html',
     indexable: true,
-    title: 'RANCO | Build Your Dream Home in Kerala',
+    title: 'RANCO | Home Construction & Heritage Home Renovation in Central Kerala',
     description:
-      "Bring your dream home to life with RANCO. Discover thoughtful residential solutions, quality workmanship, and a commitment to creating spaces you'll love.",
+      'From your first idea to your dream home: RANCO builds new homes and renovates traditional Kerala homes for families in Kottayam, Pathanamthitta, Idukki and Ernakulam.',
     Component: HomePage,
     heroImage: getImage('home/hero'),
-    jsonLd: [business, website],
+    jsonLd: [business, website, faqPage],
   },
   {
     id: 'not-found',

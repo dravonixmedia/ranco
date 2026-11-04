@@ -19,11 +19,12 @@ new address, so visitors never see an old cached version.
 
 | Folder | Used for | Recommended size |
 |---|---|---|
-| `media/home/hero/` | Full-screen homepage photo | Landscape, 2400 × 1600 px or larger |
+| `media/home/hero/` | Full-screen homepage photo: a contemporary Kerala home | Landscape, 2400 × 1600 px or larger |
 | `media/home/about/` | About RANCO (while empty, the 3rd hero photo is used) | Portrait or landscape, 1600 px on the long side |
-| `media/home/services/` | What We Do, when the confirmed service has no photo of its own (while empty, the 2nd hero photo is used) | Landscape 3:2, 2000 px wide |
-| `media/home/closing/` | Contact banner (while empty, the 4th hero photo is used) | Landscape, 2400 px wide |
-| `media/services/<service>/` | The service's photograph in What We Do (first file), and future service pages | Landscape, 1600 px wide |
+| `media/home/journey/` | From Idea to Handover: one photo per stage, `01-` idea … `06-` completed home (stages without a photo show as text only) | Landscape 4:3, 1600 px wide |
+| `media/services/new-home-construction/` | Our Expertise, New Home Construction (while empty, the 2nd hero photo is used) | Landscape 3:2, 2000 px wide |
+| `media/services/heritage-home-renovation/` | Our Expertise, Heritage Home Renovation: traditional Kerala homes only (while empty, the 4th hero photo is used) | Portrait 4:5, 1600 px tall |
+| `media/home/closing/` | Contact banner (while empty, the 1st hero photo is used) | Landscape, 2400 px wide |
 | `media/service-areas/<district>/` | District images | Portrait 3:4, 1600 px tall |
 | `media/about/hero/`, `media/about/gallery/` | About page | Landscape, 2400 px wide |
 | `media/projects/<project>/cover/`, `gallery/`, `progress/` | Project portfolio | Any orientation, 1600 px or larger |
@@ -93,7 +94,7 @@ entry from `images.json`; the build warns about entries for missing files.
 Projects appear only when they are verified **and** explicitly published.
 
 1. Open `media/projects/_example-project/` and copy its structure into a new
-   folder, for example `media/projects/kottayam-home-renovation/`. Use
+   folder, for example `media/projects/kottayam-heritage-home/`. Use
    lowercase letters, numbers and hyphens.
 2. Upload photos to `cover/` (at least one, required), `gallery/` and, if
    wanted, `progress/`.
@@ -101,10 +102,10 @@ Projects appear only when they are verified **and** explicitly published.
 
 ```json
 {
-  "slug": "kottayam-home-renovation",
-  "title": "Kottayam Home Renovation",
+  "slug": "kottayam-heritage-home",
+  "title": "Heritage Home, Kottayam",
   "district": "Kottayam",
-  "category": "Home Renovation",
+  "category": "Heritage Home Renovation",
   "description": "A verified description of the work, at least 40 characters long.",
   "published": false
 }
@@ -112,14 +113,17 @@ Projects appear only when they are verified **and** explicitly published.
 
 - `slug` must match the folder name.
 - `district` must be one of: Kottayam, Pathanamthitta, Idukki, Ernakulam.
-- `category` must be one of the service names in `src/content/taxonomy.json`.
+- `category` must be `New Home Construction` or `Heritage Home Renovation`
+  (the service names in `src/content/taxonomy.json`). Our Work groups projects
+  under these two headings.
 
 4. When every detail has been confirmed, change `"published"` to `true` and
    commit. If anything is missing or invalid, the project stays hidden and the
    build log explains why.
 
 Never publish photos of work RANCO did not do, and never present stock or
-inspiration images as RANCO projects.
+inspiration images as RANCO projects. Only upload photographs RANCO has the
+right to use, anywhere on the site.
 
 ## Troubleshooting
 

@@ -12,8 +12,9 @@ export const SHOW_PROJECTS = getPublishedProjects().length > 0 || IS_PREVIEW
 /** Homepage sections, in page order. */
 export const NAV: NavItem[] = [
   { label: 'About', href: '/#about' },
-  { label: 'Services', href: '/#services' },
-  ...(SHOW_PROJECTS ? [{ label: 'Projects', href: '/#projects' }] : []),
+  { label: 'Journey', href: '/#journey' },
+  { label: 'Expertise', href: '/#expertise' },
+  ...(SHOW_PROJECTS ? [{ label: 'Our Work', href: '/#work' }] : []),
   { label: 'Where We Work', href: '/#areas' },
   { label: 'FAQ', href: '/#faq' },
 ]

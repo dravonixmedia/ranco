@@ -89,7 +89,7 @@ async function liveMode(base) {
   check('/ has a <title>', /<title>[^<]{10,}<\/title>/.test(html))
   check('/ has a meta description', /<meta name="description" content="[^"]{50,}">/.test(html))
   check('/ canonical is https://ranco.in/', html.includes('<link rel="canonical" href="https://ranco.in/">'))
-  check('/ is prerendered (content in HTML)', html.replace(/<[^>]+>/g, '').includes('Build Your Dream Home With Us.') && html.includes('tel:+919846667095') && html.includes('https://wa.me/919846667095'))
+  check('/ is prerendered (content in HTML)', html.replace(/<[^>]+>/g, '').includes('From Your First Idea to Your Dream Home.') && html.includes('tel:+919846667095') && html.includes('https://wa.me/919846667095'))
   check('/ has og:image on https://ranco.in', /<meta property="og:image" content="https:\/\/ranco\.in\/_media\/[0-9a-f]+-\d+\.webp">/.test(html))
   const blocks = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map((m) => m[1])
   let ld = []
@@ -98,7 +98,11 @@ async function liveMode(base) {
   } catch {
     // reported below
   }
-  check('/ structured data parses (business + website)', ld.length === 2 && ld.some((d) => d['@type'] === 'HomeAndConstructionBusiness' && d.telephone === '+91-98466-67095') && ld.some((d) => d['@type'] === 'WebSite'), `${blocks.length} blocks`)
+  check('/ structured data parses (business + website + FAQ)', ld.length === 3 && ld.some((d) => d['@type'] === 'HomeAndConstructionBusiness' && d.telephone === '+91-98466-67095') && ld.some((d) => d['@type'] === 'WebSite'), `${blocks.length} blocks`)
+  const faq = ld.find((d) => d['@type'] === 'FAQPage')
+  const decode = (t) => t.replace(/&amp;/g, '&').replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"')
+  const pageText = decode(html.replace(/<[^>]+>/g, ' '))
+  check('/ FAQ structured data matches the questions and answers on the page', !!faq && faq.mainEntity.length > 0 && faq.mainEntity.every((q) => pageText.includes(q.name) && pageText.includes(q.acceptedAnswer.text)), faq ? `${faq.mainEntity.length} questions` : 'missing')
   check('/ hero image is preloaded', /<link rel="preload" as="image"[^>]+fetchpriority="high">/.test(html))
   const head = await get(`${base}/`, { method: 'HEAD' })
   check('HEAD / → 200', head.status === 200, String(head.status))
